@@ -29,7 +29,7 @@ Timezone: GMT +2:00 <br/>
 
 **Hashem:** <br/>
 Role: Flutter <br/>
-OS: ?? <br/>
+OS: Mac <br/>
 Timezone: GMT +4:30 <br/>
 
 
