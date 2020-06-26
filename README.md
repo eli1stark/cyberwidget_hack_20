@@ -20,6 +20,6 @@ Role: UI/Flutter (design) <br/>
 OS: Windows <br/>
 
 **Antonio:** <br/>
-Role: status pending... <br/>
+Role: Flutter/Firebase... <br/>
 OS: Mac <br/>
 
