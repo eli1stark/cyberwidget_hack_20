@@ -10,16 +10,26 @@
 **Eli:** <br/>
 Role: Organization, Flutter/Firebase <br/>
 OS: Linux <br/>
+Timezone: GMT +3:00 <br/>
 
 **Balaji:** <br/>
 Role: Flutter/Firebase <br/>
 OS: Windows <br/>
+Timezone: GMT +5:30 <br/>
 
 **Akshay:** <br/>
 Role: UI/Flutter (design) <br/>
 OS: Windows <br/>
+Timezone: GMT +5:30 <br/>
 
 **Antonio:** <br/>
 Role: Flutter/Firebase <br/>
 OS: Mac <br/>
+Timezone: GMT +2:00 <br/>
+
+**Hashem:** <br/>
+Role: Flutter <br/>
+OS: ?? <br/>
+Timezone: GMT +4:30 <br/>
+
 
