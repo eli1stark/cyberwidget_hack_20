@@ -70,9 +70,6 @@ class _HomeState extends State<Home> {
                 ),
               ),
               SizedBox(height: 20.0,),
-
-              //stream builder here i'm fetching data but don't know how to split the user's data into
-              //2 parts and send it to postlistwidget--> which gets 2 documentsnapshots
               Container(
                 width: width,
                 height: height*0.9,
