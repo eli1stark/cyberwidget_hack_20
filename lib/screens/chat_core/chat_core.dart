@@ -56,6 +56,7 @@ class ChatCore extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
+              flex: 12,
               child: Container(
                 height: size.height * 0.2,
                 padding: const EdgeInsets.only(top: 16),
@@ -71,7 +72,7 @@ class ChatCore extends StatelessWidget {
                 ),
               ),
             ),
-            SendMessageBarWidget(size: size)
+            SendMessageBarWidget(size: size),
           ],
         ),
       ),
