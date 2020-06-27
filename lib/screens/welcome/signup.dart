@@ -1,4 +1,5 @@
 // helpers
+import 'package:cyberwidget_hack_20/screens/container/tabs_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -7,7 +8,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:cyberwidget_hack_20/screens/home/home.dart';
 
 // services
-import 'package:cyberwidget_hack_20/services/auth.dart';
+import 'package:cyberwidget_hack_20/services/authentication/email_auth.dart';
 
 // components
 import 'components/arrow_back.dart';
@@ -26,7 +27,6 @@ class _SignUpState extends State<SignUp> {
   ProgressDialog pd;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     email = TextEditingController(text: '');
     fstname = TextEditingController(text: '');
@@ -34,6 +34,9 @@ class _SignUpState extends State<SignUp> {
     password = TextEditingController(text: '');
     username = TextEditingController(text: '');
   }
+
+  // Initialize Auth object
+  final EmailAuthService _auth = EmailAuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -204,33 +207,37 @@ class _SignUpState extends State<SignUp> {
                                     ]).show();
                               } else {
                                 pd.show();
-                                bool iscrt = await firebaseauth().Signupuser(
-                                    email.text,
-                                    password.text,
-                                    username.text,
-                                    fstname.text,
-                                    lstname.text);
-                                if (iscrt) {
+                                // Trying to register the user
+                                dynamic result =
+                                    await _auth.registerWithEmailAndPassword(
+                                        email.text, password.text);
+                                // If success:
+                                if (result != null) {
                                   pd.hide();
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Home()));
+                                  // TODO add username, firstname and lastname to firestore
+                                  //     username.text,
+                                  //     fstname.text,
+                                  //     lstname.text,
+                                  Navigator.pushNamed(
+                                    context,
+                                    TabsScreen.routeName,
+                                  );
                                 } else {
                                   pd.hide();
                                   Alert(
-                                      context: context,
-                                      type: AlertType.error,
-                                      title: 'Something wrong',
-                                      buttons: [
-                                        DialogButton(
-                                          child: Text('Okay'),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          color: Color(0xffF1009C),
-                                        )
-                                      ]).show();
+                                    context: context,
+                                    type: AlertType.error,
+                                    title: 'Something wrong',
+                                    buttons: [
+                                      DialogButton(
+                                        child: Text('Okay'),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        color: Color(0xffF1009C),
+                                      )
+                                    ],
+                                  ).show();
                                 }
                                 email.clear();
                                 username.clear();
