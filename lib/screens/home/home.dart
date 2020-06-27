@@ -14,7 +14,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
       appBar: PreferredSize(
         child: TopNavBar(
           iconLeft: Icons.arrow_back,
