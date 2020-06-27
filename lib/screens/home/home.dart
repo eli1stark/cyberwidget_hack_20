@@ -14,7 +14,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
       appBar: PreferredSize(
         child: TopNavBar(
           iconLeft: Icons.arrow_back,
@@ -26,9 +25,6 @@ class _HomeState extends State<Home> {
           onTapRight: () {},
         ),
         preferredSize: Size.fromHeight(kToolbarHeight),
-      ),
-      bottomNavigationBar: BottomNavBar(
-        newIndex: 0,
       ),
     );
   }

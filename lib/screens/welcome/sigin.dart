@@ -15,6 +15,7 @@ import 'components/custom_gradient.dart';
 import 'components/background_container.dart';
 
 class SignIn extends StatefulWidget {
+  static const routeName = '/sign_in';
   @override
   _SignInState createState() => _SignInState();
 }

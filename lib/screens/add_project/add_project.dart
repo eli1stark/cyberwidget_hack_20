@@ -16,12 +16,8 @@ class AddProject extends StatelessWidget {
           textString: "Final",
           onTapText: () {},
           onTapLeft: () {},
-          
         ),
         preferredSize: Size.fromHeight(kToolbarHeight),
-        ),
-          bottomNavigationBar: BottomNavBar(
-        newIndex: 1,
       ),
     );
   }
