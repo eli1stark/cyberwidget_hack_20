@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cyberwidget_hack_20/components/bottom_navbar.dart';
 import 'package:cyberwidget_hack_20/components/tag_list.dart';
 import 'package:cyberwidget_hack_20/components/top_navbar.dart';
 import 'package:cyberwidget_hack_20/screens/home/components/postlist.dart';
@@ -86,12 +85,11 @@ class _HomeState extends State<Home> {
                     return ListView.builder(
                         itemCount: snapshot.data.documents.length,
                         itemBuilder: (context,index){
-                          return Postlist(snapshot.data.documents[index],snapshot.data.documents[index]);
+                          return Postlist(snapshot.data.documents[index],index);
                     });
                   },
                 ),
               ),
-
 
 
             ],
