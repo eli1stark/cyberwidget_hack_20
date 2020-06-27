@@ -1,3 +1,5 @@
+import 'package:cyberwidget_hack_20/screens/welcome/sigin.dart';
+import 'package:cyberwidget_hack_20/screens/welcome/signup.dart';
 import 'package:flutter/material.dart';
 
 class Welcome extends StatelessWidget {
@@ -20,11 +22,11 @@ class Welcome extends StatelessWidget {
                 fit: BoxFit.fill,
               ),
             ),
-//            Container(
-//              width: width,
-//              height: height,
-//              child: Image.asset('assets/homefront.png',fit: BoxFit.fill,),
-//            ),
+            Container(
+              width: width,
+              height: height,
+              child: Image.asset('assets/design.png',fit: BoxFit.fill,),
+            ),
             Container(
               width: width,
               height: height,
@@ -33,16 +35,10 @@ class Welcome extends StatelessWidget {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                    Color.fromRGBO(241, 0, 156, 0.38),
-                    Color(0xff1A053E)
-                  ])),
-            ),
-            Container(
-              width: width,
-              height: height,
-              child: Image.asset(
-                'assets/design.png',
-                fit: BoxFit.fill,
+                        Color.fromRGBO(241, 0, 156, 0.38),
+                        Color(0xff1A053E)
+                      ]
+                  )
               ),
             ),
             Align(
@@ -64,16 +60,9 @@ class Welcome extends StatelessWidget {
                   Container(
                     width: width * 0.65,
                     height: 50.0,
-                    child: Expanded(
-                      //here is the expandable text
-                      child: Text(
-                        'Discover the top Flutter Designers & Developers',
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          color: Color(0xffC4C4C4),
-                        ),
-                      ),
-                    ),
+                    child: Text('Discover the top Flutter Designers & Developers',style: TextStyle(
+                      fontSize: 15.0,color: Color(0xffC4C4C4),
+                    ),),
                   ),
                 ],
               ),
@@ -86,10 +75,19 @@ class Welcome extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
-                      width: width * 0.7,
+                      width: width*0.7,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.0),
+                        boxShadow:[BoxShadow(
+                          color: Color(0xff6F29E6),
+                          spreadRadius: 2.0,
+                          blurRadius: 4.0,
+                          offset: Offset(0,4),
+                        )]
+                      ),
                       child: RaisedButton(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(12.0),
                         ),
                         onPressed: () {},
                         color: Colors.white,
@@ -130,34 +128,56 @@ class Welcome extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          RaisedButton(
-                            color: Color(0xffF1009C),
-                            onPressed: () {},
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Sign in',
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  color: Color(0xffFFFFFF),
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12.0),
+                                boxShadow:[BoxShadow(
+                                  color: Color(0xff6F29E6),
+                                  spreadRadius: 1.0,
+                                  blurRadius: 8.0,
+                                  offset: Offset(4,4),
+                                )]
+                            ),
+                            child: RaisedButton(
+                              color: Color(0xffF1009C),
+                              onPressed: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>Signup()));
+                              },
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('Sign in',style: TextStyle(
+                                  fontSize: 20.0,color: Color(0xffC4C4C4),
+                                ),
                                 ),
                               ),
                             ),
                           ),
-                          RaisedButton(
-                            color: Color(0xffF1009C),
-                            onPressed: () {},
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Sign up',
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  color: Color(0xffFFFFFF),
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12.0),
+                                boxShadow:[BoxShadow(
+                                  color: Color(0xff6F29E6),
+                                  spreadRadius: 1.0,
+                                  blurRadius: 8.0,
+                                  offset: Offset(4,4),
+                                )]
+                            ),
+                            child: RaisedButton(
+                              color: Color(0xffF1009C),
+                              onPressed: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>Signin()));
+                              },
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('Sign up',style: TextStyle(
+                                  fontSize: 20.0,color: Color(0xffC4C4C4),
+                                ),
                                 ),
                               ),
                             ),
