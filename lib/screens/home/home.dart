@@ -1,6 +1,7 @@
 import 'package:cyberwidget_hack_20/components/bottom_navbar.dart';
 import 'package:cyberwidget_hack_20/components/tag_list.dart';
 import 'package:cyberwidget_hack_20/components/top_navbar.dart';
+import 'package:cyberwidget_hack_20/screens/chat_page/chat_page.dart';
 import 'package:cyberwidget_hack_20/screens/home/components/tagslist.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -44,8 +45,18 @@ class _HomeState extends State<Home> {
           fontAwesomeLeft: false,
           fontAwesomeRight: true,
           textButtonVisibility: false,
-          onTapLeft: () {},
-          onTapRight: () {},
+          centerTitle: true,
+          title: Text("CYBERWIDGET"),
+          onTapLeft: () {
+            setState(() {
+              // here should be a function to exit the app
+            });
+          },
+          onTapRight: () {
+            setState(() {
+              Navigator.of(context).pushNamed(ChatPage.routeName);
+            });
+          },
         ),
         preferredSize: Size.fromHeight(kToolbarHeight),
       ),

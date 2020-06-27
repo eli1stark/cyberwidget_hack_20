@@ -18,7 +18,6 @@ class AddProject extends StatelessWidget {
           onTapLeft: () {},
         ),
         preferredSize: Size.fromHeight(kToolbarHeight),
-<<<<<<< HEAD
       ),
       body: Wrap(
         direction: Axis.vertical,
@@ -143,8 +142,6 @@ class AddProject extends StatelessWidget {
              ],
           )
         ],
-=======
->>>>>>> 1433116e2de9704f81069b24fd054e2c0b403a66
       ),
     );
   }
