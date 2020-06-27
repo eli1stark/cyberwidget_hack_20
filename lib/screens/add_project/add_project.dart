@@ -15,7 +15,25 @@ class AddProject extends StatefulWidget {
 
 class _AddProjectState extends State<AddProject> {
   File _image;
-  String name;
+  String _title;
+  String _discription;
+  String _link;
+  String _tags;
+
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+
+  Widget _buildTitle() {
+    return null;
+  }
+  Widget _buildDescription() {
+    return null;
+  }
+  Widget _buildLink() {
+    return null;
+  }
+  Widget _buildTags() {
+    return null;
+  }
 
   Future _getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -40,138 +58,23 @@ class _AddProjectState extends State<AddProject> {
           onTapLeft: () {},
         ),
         preferredSize: Size.fromHeight(kToolbarHeight),
-<<<<<<< HEAD
-      ),
-      body: Wrap(
-        direction: Axis.vertical,
-        children: <Widget>[
-          TextField(
-            cursorColor: Colors.white,
-            style: TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-              hintText: 'Title',
-              hintStyle: TextStyle(color: Colors.white),
-              //border: OutlineInputBorder(borderSide: BorderSide(color: Colors.white))
-            ),
-          ),
-          SizedBox(
-            height: 25,
-          ),
-          Text(
-            "Description",
-            style: TextStyle(color: Colors.white, fontSize: 24),
-          ),
-          SizedBox(
-            height: 25,
-          ),
-          TextField(
-            cursorColor: Colors.white,
-            style: TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-              hintText: 'Write Your Description Here!',
-              hintStyle: TextStyle(color: Colors.white),
-              //border: OutlineInputBorder(borderSide: BorderSide(color: Colors.white))
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                "Tags",
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
-              TextField(
-                cursorColor: Colors.white,
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  hintText: '',
-                  hintStyle: TextStyle(color: Colors.white),
-                  //border: OutlineInputBorder(borderSide: BorderSide(color: Colors.white))
-                ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                "Repo Link",
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
-              TextField(
-                cursorColor: Colors.white,
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  hintText: 'www.github.com',
-                  hintStyle: TextStyle(color: Colors.white),
-                  //border: OutlineInputBorder(borderSide: BorderSide(color: Colors.white))
-                ),
-              ),
-            ],
-          ),
-          Stack(
-            children: <Widget>[
-              Container(
-                height: 130,
-                width: 354,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(44),
-                ),
-                color: Colors.white,
-                child: Image(image: null),
-              ),
-              FlatButton(
-                child: Container(
-                    height: 60,
-                    width: 200,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    color: Color(0xff434343),
-                    child: Center(
-                      child: Text(
-                        "Repo Link",
-                        style: TextStyle(color: Colors.white, fontSize: 24),
-                      ),
-                    )),
-                onPressed: () {},
-              ),
-            ],
-          ),
-          Row(
-             children: <Widget>[
-               Container(
-                height: 80,
-                width: 80,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                color: Colors.white,
-                child: Image(image: null),
-              ),
-              Container(
-                height: 80,
-                width: 80,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(44),
-                ),
-                color: Colors.white,
-                child: Icon(Icons.add_a_photo),
-              ),
-             ],
-          )
-        ],
-=======
->>>>>>> 2171eb492cb25b0a11a44e4560e2b92a47585f42
       ),
       body: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         direction: Axis.vertical,
         children: <Widget>[
-          Text('$name'),
-          TextFormField(onChanged: (text) {
-            
-          }),
+          Form(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                _buildTitle(),
+                _buildDescription(),
+                _buildTags(),
+                _buildLink(),
+
+              ],
+            )
+            ),
           SizedBox(height: 50,),
           Container(
                 height: 150,
