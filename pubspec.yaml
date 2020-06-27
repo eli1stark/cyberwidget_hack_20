@@ -22,6 +22,9 @@ dependencies:
   cloud_firestore: ^0.13.7
   progress_dialog: ^1.2.0
 
+  # Icons
+  font_awesome_flutter: ^8.8.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

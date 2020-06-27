@@ -4,6 +4,10 @@ class ProfileSettings extends StatelessWidget {
   static const routeName = '/profile_settings';
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Cart'),
+      ),
+    );
   }
 }

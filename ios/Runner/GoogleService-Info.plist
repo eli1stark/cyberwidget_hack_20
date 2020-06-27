@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>484819623630-qt8g6o3rkahkh3j0q42e3e8ctrn6urdj.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.484819623630-qt8g6o3rkahkh3j0q42e3e8ctrn6urdj</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>484819623630-92al4su8k3bl09s90i16vted8oi2o3os.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDhVu8XPBuc20Z550qCkXdQLwS6symFBOE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>484819623630</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.hack.cyberwidgethack20</string>
+	<key>PROJECT_ID</key>
+	<string>cyber-widget-14dc5</string>
+	<key>STORAGE_BUCKET</key>
+	<string>cyber-widget-14dc5.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:484819623630:ios:c6f01ed395caedb98dba9f</string>
+	<key>DATABASE_URL</key>
+	<string>https://cyber-widget-14dc5.firebaseio.com</string>
+</dict>
+</plist>
