@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../profile_settings/profile_settings.dart';
 
+enum MoreOptions { Edit, Signout }
+
 class Profile extends StatelessWidget {
   static const routeName = '/profile';
   @override
@@ -21,11 +23,47 @@ class Profile extends StatelessWidget {
               ),
             ),
             actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () =>
-                    Navigator.pushNamed(context, ProfileSettings.routeName),
-              )
+              PopupMenuButton(
+                onSelected: (MoreOptions selectedValue) {
+                  if (selectedValue == MoreOptions.Signout) {
+                    // sign out user
+                  } else {
+                    // edit profile
+                    Navigator.of(context).pushNamed(ProfileSettings.routeName);
+                  }
+                },
+                itemBuilder: (_) => [
+                  PopupMenuItem(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text('Edit'),
+                        Icon(
+                          Icons.edit,
+                          color: Theme.of(context).primaryColor,
+                        )
+                      ],
+                    ),
+                    value: MoreOptions.Edit,
+                  ),
+                  PopupMenuItem(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text('Sign Out'),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Icon(
+                          Icons.exit_to_app,
+                          color: Theme.of(context).primaryColor,
+                        )
+                      ],
+                    ),
+                    value: MoreOptions.Signout,
+                  )
+                ],
+              ),
             ],
           ),
           SliverGrid(
