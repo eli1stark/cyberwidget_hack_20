@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 // screens
+import 'components/constants.dart';
 import 'screens/chat_core/chat_core.dart';
 import 'screens/chat_page/chat_page.dart';
 import 'screens/home/home.dart';
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        brightness: Brightness.light,
+        primaryColor: Color(0xff1A053E),
+        canvasColor: Color(0xff1A053E),
         //fontFamily: 'Lato',
         accentColor: Colors.grey,
       ),
