@@ -15,7 +15,25 @@ class AddProject extends StatefulWidget {
 
 class _AddProjectState extends State<AddProject> {
   File _image;
-  String name;
+  String _title;
+  String _discription;
+  String _link;
+  String _tags;
+
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+
+  Widget _buildTitle() {
+    return null;
+  }
+  Widget _buildDescription() {
+    return null;
+  }
+  Widget _buildLink() {
+    return null;
+  }
+  Widget _buildTags() {
+    return null;
+  }
 
   Future _getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -45,10 +63,18 @@ class _AddProjectState extends State<AddProject> {
         crossAxisAlignment: WrapCrossAlignment.center,
         direction: Axis.vertical,
         children: <Widget>[
-          Text('$name'),
-          TextFormField(onChanged: (text) {
-            
-          }),
+          Form(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                _buildTitle(),
+                _buildDescription(),
+                _buildTags(),
+                _buildLink(),
+
+              ],
+            )
+            ),
           SizedBox(height: 50,),
           Container(
                 height: 150,
