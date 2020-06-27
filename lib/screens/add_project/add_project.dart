@@ -18,7 +18,6 @@ class AddProject extends StatelessWidget {
           onTapLeft: () {},
         ),
         preferredSize: Size.fromHeight(kToolbarHeight),
-<<<<<<< HEAD
       ),
       body: Wrap(
         direction: Axis.vertical,
@@ -93,19 +92,21 @@ class AddProject extends StatelessWidget {
                 height: 130,
                 width: 354,
                 decoration: BoxDecoration(
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(44),
                 ),
-                color: Colors.white,
-                child: Image(image: null),
+                // color: Colors.white,
+                // child: Image(image: null),
               ),
               FlatButton(
                 child: Container(
                     height: 60,
                     width: 200,
                     decoration: BoxDecoration(
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(18),
                     ),
-                    color: Color(0xff434343),
+                    // color: Color(0xff434343),
                     child: Center(
                       child: Text(
                         "Repo Link",
@@ -122,25 +123,25 @@ class AddProject extends StatelessWidget {
                 height: 80,
                 width: 80,
                 decoration: BoxDecoration(
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                color: Colors.white,
-                child: Image(image: null),
+                // color: Colors.white,
+                // child: Image(image: null),
               ),
               Container(
                 height: 80,
                 width: 80,
                 decoration: BoxDecoration(
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(44),
                 ),
-                color: Colors.white,
+                // color: Colors.white,
                 child: Icon(Icons.add_a_photo),
               ),
              ],
           )
         ],
-=======
->>>>>>> 2171eb492cb25b0a11a44e4560e2b92a47585f42
       ),
     );
   }
