@@ -4,10 +4,10 @@ import 'package:progress_dialog/progress_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 // screens
-import 'package:cyberwidget_hack_20/screens/home/home.dart';
+import 'package:cyberwidget_hack_20/screens/container/tabs_screen.dart';
 
 // services
-import 'package:cyberwidget_hack_20/services/auth.dart';
+import 'package:cyberwidget_hack_20/services/authentication/email_auth.dart';
 
 // components
 import 'components/arrow_back.dart';
@@ -30,6 +30,9 @@ class _SignInState extends State<SignIn> {
     email = TextEditingController(text: '');
     password = TextEditingController(text: '');
   }
+
+  // Initialize Auth object
+  final EmailAuthService _auth = EmailAuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -148,13 +151,18 @@ class _SignInState extends State<SignIn> {
                                       )
                                     ]).show();
                               } else {
-                                // TODO
                                 pd.show();
-                                bool val = await firebaseauth()
-                                    .signinauth(email.text, password.text);
-                                if (val) {
+                                dynamic result =
+                                    await _auth.signInWithEmailAndPassword(
+                                  email.text,
+                                  password.text,
+                                );
+                                if (result != null) {
                                   pd.hide();
-                                  Navigator.pushNamed(context, Home.routeName);
+                                  Navigator.pushNamed(
+                                    context,
+                                    TabsScreen.routeName,
+                                  );
                                 } else {
                                   pd.hide();
                                   Alert(

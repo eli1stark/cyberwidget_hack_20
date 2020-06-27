@@ -1,11 +1,16 @@
+import 'package:cyberwidget_hack_20/screens/welcome/welcome.dart';
+import 'package:cyberwidget_hack_20/services/authentication/email_auth.dart';
 import 'package:flutter/material.dart';
-
 import '../profile_settings/profile_settings.dart';
 
 enum MoreOptions { Edit, Signout }
 
 class Profile extends StatelessWidget {
   static const routeName = '/profile';
+
+  // Initialize Auth object
+  final EmailAuthService _auth = EmailAuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,9 +29,11 @@ class Profile extends StatelessWidget {
             ),
             actions: <Widget>[
               PopupMenuButton(
-                onSelected: (MoreOptions selectedValue) {
+                onSelected: (MoreOptions selectedValue) async {
                   if (selectedValue == MoreOptions.Signout) {
                     // sign out user
+                    await _auth.signOut();
+                    Navigator.pushNamed(context, Welcome.routeName);
                   } else {
                     // edit profile
                     Navigator.of(context).pushNamed(ProfileSettings.routeName);
