@@ -20,9 +20,13 @@ class _TabsScreenState extends State<TabsScreen> {
   int _selectedPageIndex = 0;
 
   void _selectPage(int index) {
-    setState(() {
-      _selectedPageIndex = index;
-    });
+    if (index == 2) {
+      Navigator.of(context).pushNamed(ChatPage.routeName);
+    } else {
+      setState(() {
+        _selectedPageIndex = index;
+      });
+    }
   }
 
   @override
