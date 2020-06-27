@@ -22,11 +22,6 @@ class Welcome extends StatelessWidget {
                 fit: BoxFit.fill,
               ),
             ),
-//            Container(
-//              width: width,
-//              height: height,
-//              child: Image.asset('assets/homefront.png',fit: BoxFit.fill,),
-//            ),
             Container(
               width: width,
               height: height,
