@@ -18,13 +18,15 @@ dependencies:
 
   # Firebase
   firebase_auth: ^0.16.1
-  rflutter_alert: ^1.0.3
   cloud_firestore: ^0.13.7
-  progress_dialog: ^1.2.0
   google_sign_in: ^4.5.1
 
   # Icons
   font_awesome_flutter: ^8.8.1
+
+  # Helpers
+  rflutter_alert: ^1.0.3
+  progress_dialog: ^1.2.0
 
 dev_dependencies:
   flutter_test:

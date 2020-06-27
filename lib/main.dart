@@ -7,7 +7,10 @@ import 'screens/container/tabs_screen.dart';
 import 'screens/home/home.dart';
 import 'screens/profile/profile.dart';
 import 'screens/profile_settings/profile_settings.dart';
+import 'screens/welcome/sigin.dart';
+import 'screens/welcome/signup.dart';
 import 'screens/welcome/welcome.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -25,7 +28,9 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.grey,
       ),
       routes: {
-        '/': (ctx) => TabsScreen(),
+        // initial route:
+        '/': (context) => TabsScreen(),
+        // routes:
         ChatCore.routeName: (context) => ChatCore(),
         ChatPage.routeName: (context) => ChatPage(),
         Home.routeName: (context) => Home(),
@@ -33,6 +38,8 @@ class MyApp extends StatelessWidget {
         ProfileSettings.routeName: (context) => ProfileSettings(),
         Welcome.routeName: (context) => Welcome(),
         AddProject.routeName: (context) => AddProject(),
+        SignIn.routeName: (context) => SignIn(),
+        SignUp.routeName: (context) => SignUp(),
       },
     );
   }
