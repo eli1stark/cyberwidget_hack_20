@@ -141,7 +141,7 @@ class Welcome extends StatelessWidget {
                                 'Sign in',
                                 style: TextStyle(
                                   fontSize: 20.0,
-                                  color: Color(0xffC4C4C4),
+                                  color: Color(0xffFFFFFF),
                                 ),
                               ),
                             ),
@@ -157,7 +157,7 @@ class Welcome extends StatelessWidget {
                                 'Sign up',
                                 style: TextStyle(
                                   fontSize: 20.0,
-                                  color: Color(0xffC4C4C4),
+                                  color: Color(0xffFFFFFF),
                                 ),
                               ),
                             ),

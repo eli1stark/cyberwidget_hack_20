@@ -1,4 +1,5 @@
 import 'package:cyberwidget_hack_20/components/bottom_navbar.dart';
+import 'package:cyberwidget_hack_20/components/top_navbar.dart';
 import 'package:flutter/material.dart';
 
 class AddProject extends StatelessWidget {
@@ -6,7 +7,20 @@ class AddProject extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavBar(
+      appBar: PreferredSize(
+        child: TopNavBar(
+          iconLeft: Icons.arrow_back,
+          fontAwesomeLeft: false,
+          fontAwesomeRight: false,
+          textButtonVisibility: true,
+          textString: "Final",
+          onTapText: () {},
+          onTapLeft: () {},
+          
+        ),
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        ),
+          bottomNavigationBar: BottomNavBar(
         newIndex: 1,
       ),
     );
