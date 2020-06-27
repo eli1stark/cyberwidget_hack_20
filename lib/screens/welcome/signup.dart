@@ -1,11 +1,10 @@
 // helpers
-import 'package:cyberwidget_hack_20/screens/container/tabs_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 // screens
-import 'package:cyberwidget_hack_20/screens/home/home.dart';
+import 'package:cyberwidget_hack_20/screens/container/tabs_screen.dart';
 
 // services
 import 'package:cyberwidget_hack_20/services/authentication/email_auth.dart';

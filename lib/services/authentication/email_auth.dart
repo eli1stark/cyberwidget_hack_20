@@ -15,11 +15,11 @@ class EmailAuthService {
   }
 
   // sign in with email and password
-  Future signInEmail() async {
+  Future signInWithEmailAndPassword(String email, String password) async {
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(
-        email: null,
-        password: null,
+        email: email,
+        password: password,
       );
       FirebaseUser user = result.user;
       return _userFromFirebaseUser(user);
@@ -47,6 +47,7 @@ class EmailAuthService {
   // sign out
   Future signOut() async {
     try {
+      print('success');
       return await _auth.signOut();
     } catch (e) {
       print(e.toString());
@@ -54,9 +55,3 @@ class EmailAuthService {
     }
   }
 }
-
-// TODO add to Profile page
-// final EmailAuthService _auth = EmailAuthService();
-// onPressed: () async {
-//   await _auth.signOut();
-// },

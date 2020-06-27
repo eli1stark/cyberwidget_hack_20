@@ -6,3 +6,5 @@ const kAccentColor = Color(0xFF6F29E6);
 const kBgColor = Color(0xFF1A053E);
 const kTopNavBarSizeIcon = 25.0;
 const kSubtitleChatListTileColor = Color.fromARGB(88, 184, 184, 184);
+const kInputFieldColor = Color(0xFF969696);
+const kMessageBoxColor = Color.fromARGB(90, 111, 111, 111);
