@@ -22,10 +22,19 @@ class TopNavBar extends StatelessWidget {
     this.fontAwesomeRight,
     this.onTapLeft,
     this.onTapRight,
+    this.textButton,
+    this.onTapText,
+    this.textButtonVisibility = false,
+    this.textString,
   });
 
   final IconData iconLeft;
   final IconData iconRight;
+
+  final String textString;
+  final FlatButton textButton;
+  final Function onTapText;
+  final bool textButtonVisibility;
 
   /// If you want to add Font Awesome icon to the left then fontAwesome must be true
   /// If material icon then fontAwesome must be false
@@ -73,7 +82,20 @@ class TopNavBar extends StatelessWidget {
                   size: 35.0,
                 ),
           onPressed: onTapRight,
-        )
+        ),
+        Visibility(
+          visible: textButtonVisibility,
+          child: FlatButton(
+            onPressed: onTapText,
+            child: Text(
+              "$textString",
+              style: TextStyle(
+                color: Color(0xffF1009C),
+                fontSize: 21,
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
