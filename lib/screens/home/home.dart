@@ -1,5 +1,7 @@
 import 'package:cyberwidget_hack_20/components/bottom_navbar.dart';
+import 'package:cyberwidget_hack_20/components/tag_list.dart';
 import 'package:cyberwidget_hack_20/components/top_navbar.dart';
+import 'package:cyberwidget_hack_20/screens/home/components/tagslist.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -11,8 +13,29 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  List tags=Tags().get_the_listoftags();
+  List<Widget> ls=[];
+  getvalues(){
+    setState(() {
+      tags.forEach((element) {
+        print('debug $element');
+        ls.add(
+          Taglist(element),
+        );
+      });
+    });
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getvalues();
+  }
   @override
   Widget build(BuildContext context) {
+    double width=MediaQuery.of(context).size.width;
+    double height=MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: PreferredSize(
         child: TopNavBar(
@@ -26,6 +49,24 @@ class _HomeState extends State<Home> {
         ),
         preferredSize: Size.fromHeight(kToolbarHeight),
       ),
+      body: Container(
+        width: width,
+        height: height,
+        child: Column(
+          children: [
+            SizedBox(height: 15.0,),
+            Container(
+              width: width,
+              height: 30.0,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: ls,
+              ),
+            ),
+          ],
+        ),
+      ),
+
     );
   }
 }
