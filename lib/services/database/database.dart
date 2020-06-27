@@ -1,3 +1,8 @@
+// Eli Stark
+// DANGER ZONE
+// Don't edit this file on your own
+// Contact Eli please
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cyberwidget_hack_20/models/user.dart';
 
