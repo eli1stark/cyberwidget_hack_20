@@ -5,10 +5,6 @@ class AddProject extends StatelessWidget {
   static const routeName = '/add_project';
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavBar(
-        newIndex: 1,
-      ),
-    );
+    return Scaffold();
   }
 }

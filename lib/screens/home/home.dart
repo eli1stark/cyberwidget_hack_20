@@ -26,9 +26,6 @@ class _HomeState extends State<Home> {
         ),
         preferredSize: Size.fromHeight(kToolbarHeight),
       ),
-      bottomNavigationBar: BottomNavBar(
-        newIndex: 0,
-      ),
     );
   }
 }

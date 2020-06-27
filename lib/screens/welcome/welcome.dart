@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class Welcome extends StatelessWidget {
-  static const routeName = '/';
+  static const routeName = 'welcome_screen';
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -98,10 +98,13 @@ class Welcome extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.0),
                         ),
-                        onPressed: (){
+                        onPressed: () {
                           signInWithGoogle().then((value) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Home()));
-                          }).catchError((err){
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Home()));
+                          }).catchError((err) {
                             print(err);
                             Alert(
                                 context: context,
@@ -110,13 +113,12 @@ class Welcome extends StatelessWidget {
                                 buttons: [
                                   DialogButton(
                                     child: Text('Okay'),
-                                    onPressed: (){
+                                    onPressed: () {
                                       Navigator.pop(context);
                                     },
                                     color: Color(0xffF1009C),
                                   )
-                                ]
-                            ).show();
+                                ]).show();
                           });
                         },
                         color: Colors.white,

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-// screens
+
 import 'screens/add_project/add_project.dart';
-import 'components/constants.dart';
 import 'screens/chat_core/chat_core.dart';
 import 'screens/chat_page/chat_page.dart';
+import 'screens/container/tabs_screen.dart';
 import 'screens/home/home.dart';
 import 'screens/profile/profile.dart';
 import 'screens/profile_settings/profile_settings.dart';
@@ -24,8 +24,8 @@ class MyApp extends StatelessWidget {
         //fontFamily: 'Lato',
         accentColor: Colors.grey,
       ),
-      initialRoute: Home.routeName,
       routes: {
+        '/': (ctx) => TabsScreen(),
         ChatCore.routeName: (context) => ChatCore(),
         ChatPage.routeName: (context) => ChatPage(),
         Home.routeName: (context) => Home(),

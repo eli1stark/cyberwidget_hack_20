@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../profile_settings/profile_settings.dart';
+
 class Profile extends StatelessWidget {
   static const routeName = '/profile';
   @override
@@ -18,6 +20,13 @@ class Profile extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () =>
+                    Navigator.pushNamed(context, ProfileSettings.routeName),
+              )
+            ],
           ),
           SliverGrid(
             delegate:
