@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // screens
 import 'sigin.dart';
 import 'signup.dart';
+
 // components
 import 'components/background_container.dart';
 import 'components/gradient_container.dart';
@@ -46,7 +47,7 @@ class Welcome extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Signin(),
+                    builder: (context) => SignIn(),
                   ),
                 );
               },
@@ -54,7 +55,7 @@ class Welcome extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Signup(),
+                    builder: (context) => SignUp(),
                   ),
                 );
               },
