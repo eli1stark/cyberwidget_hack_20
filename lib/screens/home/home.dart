@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cyberwidget_hack_20/components/bottom_navbar.dart';
 import 'package:cyberwidget_hack_20/components/tag_list.dart';
 import 'package:cyberwidget_hack_20/components/top_navbar.dart';
 import 'package:cyberwidget_hack_20/screens/chat_page/chat_page.dart';
@@ -86,9 +85,6 @@ class _HomeState extends State<Home> {
                 ),
               ),
               SizedBox(height: 20.0,),
-
-              //stream builder here i'm fetching data but don't know how to split the user's data into
-              //2 parts and send it to postlistwidget--> which gets 2 documentsnapshots
               Container(
                 width: width,
                 height: height*0.9,
@@ -101,12 +97,11 @@ class _HomeState extends State<Home> {
                     return ListView.builder(
                         itemCount: snapshot.data.documents.length,
                         itemBuilder: (context,index){
-                          return Postlist(snapshot.data.documents[index],snapshot.data.documents[index]);
+                          return Postlist(snapshot.data.documents[index],index);
                     });
                   },
                 ),
               ),
-
 
 
             ],

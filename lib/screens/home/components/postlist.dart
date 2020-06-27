@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-//here i tried stateless widget but thats not working statically so i moved it to statefullwidget
 class Postlist extends StatefulWidget {
-  var co,url;
-  Postlist(this.url,this.co);
+  var document,index;
+  Postlist(this.document,this.index);
 
   @override
   _PostlistState createState() => _PostlistState();
@@ -11,10 +10,22 @@ class Postlist extends StatefulWidget {
 
 class _PostlistState extends State<Postlist> {
 
+  var left=true;
+  setpositionofwidget(){
+    if(widget.index%2==0){
+      setState(() {
+        left=true;
+      });
+    }
+    else{
+      setState(() {
+        left=false;
+      });
+    }
+  }
   @override
   void initState() {
-    print(widget.url['url']);
-    print('hello');
+    setpositionofwidget();
     super.initState();
   }
   @override
@@ -24,43 +35,129 @@ class _PostlistState extends State<Postlist> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 30.0),
       child: Container(
-        width: width,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        width: width*0.4,
+        height: height*0.4,
+        child: left?Stack(
           children: [
-            Container(
-              width: width*0.4,
-              height: height*0.3,
+            Positioned(
+              left: 20.0,
+              top: 20.0,
+              child: Container(
+                width: width*0.4,
+                height: height*0.35,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12.0),
                     boxShadow: [
                       BoxShadow(
                         color: Color(0xff6F29E6),
-                        spreadRadius: 2.0,
+                        spreadRadius: 4.0,
                         blurRadius: 4.0,
                         offset: Offset(0, 4),
                       )
                     ]),
-              child: Image.network(widget.url['url'],fit: BoxFit.fill,),
+                child: Image.network(widget.document['url'],fit: BoxFit.fill,),
+              ),
             ),
-            Container(
-              width: width*0.4,
-              height: height*0.3,
+            Positioned(
+              right: 20.0,
+              top: 20.0,
+              child: Container(
+                width: width*0.4,
+                height: height*0.35,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 20.0,
+                        ),
+                        SizedBox(width: 15.0,),
+                        Text(widget.document['name'],style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                      ],
+                    ),
+                    SizedBox(height: 10.0,),
+                    Expanded(
+                      child: Text(widget.document['des'],
+                        style: TextStyle(color: Colors.white70,),
+                        textAlign: TextAlign.left,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ):Stack(
+          children: [
+            Positioned(
+              right: 20.0,
+              top: 20.0,
+              child: Container(
+                width: width*0.4,
+                height: height*0.35,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12.0),
                     boxShadow: [
                       BoxShadow(
                         color: Color(0xff6F29E6),
-                        spreadRadius: 2.0,
+                        spreadRadius: 4.0,
                         blurRadius: 4.0,
                         offset: Offset(0, 4),
                       )
                     ]),
-              child: Image.network(widget.co['url'],fit: BoxFit.fill,),
+                child: Image.network(widget.document['url'],fit: BoxFit.fill,),
+              ),
             ),
+            Positioned(
+              left: 20.0,
+              top: 20.0,
+              child: Container(
+                width: width*0.4,
+                height: height*0.35,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 20.0,
+                        ),
+                        SizedBox(width: 15.0,),
+                        Text(widget.document['name'],style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                      ],
+                    ),
+                    SizedBox(height: 10.0,),
+                    Expanded(
+                      child: Text(widget.document['des'],
+                        style: TextStyle(color: Colors.white70,),
+                        textAlign: TextAlign.left,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),
     );
   }
 }
+//Container(
+//width: width*0.4,
+//height: height*0.3,
+//decoration: BoxDecoration(
+//borderRadius: BorderRadius.circular(12.0),
+//boxShadow: [
+//BoxShadow(
+//color: Color(0xff6F29E6),
+//spreadRadius: 2.0,
+//blurRadius: 4.0,
+//offset: Offset(0, 4),
+//)
+//]),
+//child: Image.network(widget.document['url'],fit: BoxFit.fill,),
+//),
