@@ -23,43 +23,47 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: _currentIndex,
-      unselectedItemColor: Colors.purple,
-      selectedItemColor: Colors.purple[900],
-      backgroundColor: Colors.white,
-      elevation: 0,
-      items: [
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.home,
-            //Icons.filter,
-            size: 35.0,
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+      child: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        unselectedItemColor: Colors.purple,
+        selectedItemColor: Colors.purple[900],
+        backgroundColor: Colors.white,
+        elevation: 0,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              //Icons.filter,
+              size: 35.0,
+            ),
+            // Padding to remove neccessary title
+            title: Padding(padding: EdgeInsets.all(0)),
           ),
-          // Padding to remove neccessary title
-          title: Padding(padding: EdgeInsets.all(0)),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.add_circle_outline,
-            size: 35.0,
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.add_circle_outline,
+              size: 35.0,
+            ),
+            // Padding to remove neccessary title
+            title: Padding(padding: EdgeInsets.all(0)),
           ),
-          // Padding to remove neccessary title
-          title: Padding(padding: EdgeInsets.all(0)),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.person_outline,
-            size: 35.0,
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person_outline,
+              size: 35.0,
+            ),
+            // Padding to remove neccessary title
+            title: Padding(padding: EdgeInsets.all(0)),
           ),
-          // Padding to remove neccessary title
-          title: Padding(padding: EdgeInsets.all(0)),
-        ),
-      ],
-      onTap: (index) {
-        _currentIndex = index;
-        widget._onSelectItem(index);
-      },
+        ],
+        onTap: (index) {
+          _currentIndex = index;
+          widget._onSelectItem(index);
+        },
+      ),
     );
   }
 }
