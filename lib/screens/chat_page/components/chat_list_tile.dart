@@ -1,3 +1,4 @@
+import 'package:cyberwidget_hack_20/components/rounded_avatar.dart';
 import 'package:flutter/material.dart';
 import '../../../components/constants.dart';
 
@@ -24,25 +25,9 @@ class ChatListTile extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            height: containerSize,
-            width: containerSize,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white.withOpacity(0.2),
-            ),
-            child: Center(
-              child: imageUrl == null
-                  ? Icon(
-                      Icons.account_circle,
-                      size: 70,
-                      color: Colors.white,
-                    )
-                  : Image.network(
-                      imageUrl,
-                      fit: BoxFit.scaleDown,
-                    ),
-            ),
+          RoundedAvatar(
+            size: containerSize,
+            imageUrl: imageUrl,
           ),
           SizedBox(
             width: 17,

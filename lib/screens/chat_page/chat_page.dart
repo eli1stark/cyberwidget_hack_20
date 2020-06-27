@@ -1,6 +1,6 @@
 import 'package:cyberwidget_hack_20/components/constants.dart';
+import 'package:cyberwidget_hack_20/screens/chat_core/chat_core.dart';
 import 'package:cyberwidget_hack_20/screens/chat_page/components/chat_list_tile.dart';
-import 'package:cyberwidget_hack_20/screens/container/tabs_screen.dart';
 import 'package:flutter/material.dart';
 import '../../components/top_navbar.dart';
 
@@ -42,12 +42,22 @@ class ChatPage extends StatelessWidget {
       body: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 37),
         itemBuilder: (ctx, idx) {
-          return ChatListTile(
-            name: people[idx]['name'],
-            status: people[idx]['subtext'],
-            imageUrl: people[idx].containsKey('imageUrl')
-                ? people[idx]['imageUrl']
-                : null,
+          return InkWell(
+            child: ChatListTile(
+              name: people[idx]['name'],
+              status: people[idx]['subtext'],
+              imageUrl: people[idx].containsKey('imageUrl')
+                  ? people[idx]['imageUrl']
+                  : null,
+            ),
+            onTap: () => Navigator.pushNamed(
+              context,
+              ChatCore.routeName,
+              arguments: {
+                'imageUrl': people[idx]['imageUrl'],
+                'name': people[idx]['name']
+              },
+            ),
           );
         },
         itemCount: people.length,
