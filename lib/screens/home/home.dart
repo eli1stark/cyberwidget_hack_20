@@ -21,6 +21,7 @@ class _HomeState extends State<Home> {
           iconRight: FontAwesomeIcons.paperPlane,
           fontAwesomeLeft: false,
           fontAwesomeRight: true,
+          textButtonVisibility: false,
           onTapLeft: () {},
           onTapRight: () {},
         ),

@@ -30,6 +30,7 @@ class Profile extends StatelessWidget {
           ),
           SliverGrid(
             delegate:
+                // ignore: non_constant_identifier_names
                 SliverChildBuilderDelegate((BuildContext context, int Index) {
               return Container(
                 padding: EdgeInsets.symmetric(vertical: 40.0, horizontal: 30.0),
