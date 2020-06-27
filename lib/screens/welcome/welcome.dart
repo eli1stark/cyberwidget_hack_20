@@ -1,6 +1,9 @@
+import 'package:cyberwidget_hack_20/screens/home/home.dart';
 import 'package:cyberwidget_hack_20/screens/welcome/sigin.dart';
 import 'package:cyberwidget_hack_20/screens/welcome/signup.dart';
+import 'package:cyberwidget_hack_20/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class Welcome extends StatelessWidget {
   static const routeName = '/';
@@ -83,7 +86,25 @@ class Welcome extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12.0),
                         ),
                         onPressed: (){
-
+                          signInWithGoogle().then((value) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Home()));
+                          }).catchError((err){
+                            print(err);
+                            Alert(
+                                context: context,
+                                type: AlertType.error,
+                                title: 'Something wrong',
+                                buttons: [
+                                  DialogButton(
+                                    child: Text('Okay'),
+                                    onPressed: (){
+                                      Navigator.pop(context);
+                                    },
+                                    color: Color(0xffF1009C),
+                                  )
+                                ]
+                            ).show();
+                          });
                         },
                         color: Colors.white,
                         elevation: 3,

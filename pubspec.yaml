@@ -21,6 +21,7 @@ dependencies:
   rflutter_alert: ^1.0.3
   cloud_firestore: ^0.13.7
   progress_dialog: ^1.2.0
+  google_sign_in: ^4.5.1
 
 dev_dependencies:
   flutter_test:
