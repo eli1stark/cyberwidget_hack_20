@@ -24,7 +24,7 @@ class TopNavBar extends StatelessWidget {
     this.onTapRight,
     this.textButton,
     this.onTapText,
-    this.textButtonVisibility,
+    this.textButtonVisibility = false,
     this.textString,
   });
 
@@ -34,7 +34,7 @@ class TopNavBar extends StatelessWidget {
   final String textString;
   final FlatButton textButton;
   final Function onTapText;
-  bool textButtonVisibility = false;
+  final bool textButtonVisibility;
 
   /// If you want to add Font Awesome icon to the left then fontAwesome must be true
   /// If material icon then fontAwesome must be false
