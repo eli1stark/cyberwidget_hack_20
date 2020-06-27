@@ -29,7 +29,7 @@ class firebaseauth{
           .createUserWithEmailAndPassword(email: email, password: pswd).then((value) async{
             FirebaseUser user=await FirebaseAuth.instance.currentUser();
             var uid=user.uid;
-         await Firestore.instance.collection('Userdetails').add({
+         await Firestore.instance.collection('USERS').document('User').collection('About').document(uid).setData({
            "UserID":uid,'Username':username,'first name':fstname,'last name':lstname,'email':email
          }).then((value) {
            return true;
