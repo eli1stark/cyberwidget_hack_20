@@ -12,16 +12,18 @@ class SendMessageBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: size.height * 0.1,
       width: size.width,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
       child: Row(
         children: [
           Expanded(
             child: TextField(
+              maxLines: 3,
               cursorColor: Colors.white,
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                 labelText: "Write your Meessage here",
                 labelStyle: TextStyle(color: kInputFieldColor),
                 floatingLabelBehavior: FloatingLabelBehavior.never,
