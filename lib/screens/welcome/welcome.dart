@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // screens
 import 'sigin.dart';
 import 'signup.dart';
+
 // components
 import 'components/background_container.dart';
 import 'components/gradient_container.dart';
@@ -57,19 +58,15 @@ class _WelcomeState extends State<Welcome> {
               width: width,
               onSignWithGoogle: () {},
               onSignIn: () {
-                Navigator.push(
+                Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => Signin(),
-                  ),
+                  SignIn.routeName,
                 );
               },
               onSignUp: () {
-                Navigator.push(
+                Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => Signup(),
-                  ),
+                  SignUp.routeName,
                 );
               },
             )
