@@ -13,7 +13,7 @@ import 'screens/container/tabs_screen.dart';
 class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // get data from the Stream
+    // get User from the Stream
     final user = Provider.of<User>(context);
 
     // return Welcome() or Home() depending on

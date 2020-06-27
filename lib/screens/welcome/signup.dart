@@ -209,14 +209,15 @@ class _SignUpState extends State<SignUp> {
                                 // Trying to register the user
                                 dynamic result =
                                     await _auth.registerWithEmailAndPassword(
-                                        email.text, password.text);
+                                  email.text,
+                                  password.text,
+                                  username.text,
+                                  fstname.text,
+                                  lstname.text,
+                                );
                                 // If success:
                                 if (result != null) {
                                   pd.hide();
-                                  // TODO add username, firstname and lastname to firestore
-                                  //     username.text,
-                                  //     fstname.text,
-                                  //     lstname.text,
                                   Navigator.pushNamed(
                                     context,
                                     TabsScreen.routeName,

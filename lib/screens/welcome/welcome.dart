@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 // screens
 import 'sigin.dart';
 import 'signup.dart';
+import 'package:cyberwidget_hack_20/screens/container/tabs_screen.dart';
 
 // components
 import 'components/background_container.dart';
 import 'components/gradient_container.dart';
 import 'components/about_container.dart';
 import 'components/buttons_container.dart';
+
+// services
+import 'package:cyberwidget_hack_20/services/authentication/googe_auth.dart';
 
 class Welcome extends StatefulWidget {
   static const routeName = 'welcome_screen';
@@ -18,6 +22,9 @@ class Welcome extends StatefulWidget {
 
 class _WelcomeState extends State<Welcome> {
   bool animationFinished = false;
+
+  // Initialize Auth object
+  final GoogleAuthService _auth = GoogleAuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +64,18 @@ class _WelcomeState extends State<Welcome> {
             ),
             ButtonsContainer(
               width: width,
-              // TODO
-              onSignWithGoogle: () {},
+              onSignWithGoogle: () async {
+                // Trying to register the user
+                dynamic result = await _auth.signInGoogle();
+                if (result != null) {
+                  Navigator.pushNamed(
+                    context,
+                    TabsScreen.routeName,
+                  );
+                } else {
+                  print('error');
+                }
+              },
               onSignIn: () {
                 Navigator.pushNamed(
                   context,
