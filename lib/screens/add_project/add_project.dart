@@ -23,16 +23,69 @@ class _AddProjectState extends State<AddProject> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
   Widget _buildTitle() {
-    return null;
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: 'Title',
+      ),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Title is Required';
+        }
+      },
+      onSaved: (String value) {
+        _title = value;
+      },
+    );
   }
+
   Widget _buildDescription() {
-    return null;
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: 'Description',
+      ),
+      keyboardType: TextInputType.multiline,
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Description is Required';
+        }
+      },
+      onSaved: (String value) {
+        _discription = value;
+      },
+    );
   }
+
   Widget _buildLink() {
-    return null;
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: 'Tag',
+      ),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Tag is Required';
+        }
+      },
+      onSaved: (String value) {
+        _tags = value;
+      },
+    );
   }
+
   Widget _buildTags() {
-    return null;
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: 'Git Repo Link',
+      ),
+      keyboardType: TextInputType.url,
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Link is Required';
+        }
+      },
+      onSaved: (String value) {
+        _link = value;
+      },
+    );
   }
 
   Future _getImage() async {
@@ -46,40 +99,50 @@ class _AddProjectState extends State<AddProject> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        child: TopNavBar(
-          iconLeft: Icons.arrow_back,
-          fontAwesomeLeft: false,
-          fontAwesomeRight: false,
-          textButtonVisibility: true,
-          textString: "Final",
-          onTapText: () {},
-          onTapLeft: () {},
+    return SafeArea(
+      child: Scaffold(
+        appBar: PreferredSize(
+          child: TopNavBar(
+            iconLeft: Icons.arrow_back,
+            fontAwesomeLeft: false,
+            fontAwesomeRight: false,
+            textButtonVisibility: true,
+            textString: "Final",
+            onTapText: () {
+              if (!_formkey.currentState.validate()) {
+                return;
+              }
+              _formkey.currentState.save();
+              print(_title);
+            },
+            onTapLeft: () {},
+          ),
+          preferredSize: Size.fromHeight(kToolbarHeight),
         ),
-        preferredSize: Size.fromHeight(kToolbarHeight),
-      ),
-      body: Wrap(
-        crossAxisAlignment: WrapCrossAlignment.center,
-        direction: Axis.vertical,
-        children: <Widget>[
-          Form(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _buildTitle(),
-                _buildDescription(),
-                _buildTags(),
-                _buildLink(),
-
-              ],
-            )
-            ),
-          SizedBox(height: 50,),
-          Container(
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            children: <Widget>[
+              Form(
+                  key: _formkey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      _buildTitle(),
+                      _buildDescription(),
+                      _buildTags(),
+                      _buildLink(),
+                    ],
+                  )),
+              SizedBox(
+                height: 24,
+              ),
+              Container(
                 height: 150,
                 width: 300,
-                decoration: BoxDecoration(color: Colors.white , borderRadius: BorderRadius.circular(12)),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12)),
                 child: FlatButton(
                   onPressed: _getImage,
                   child: _image == null
@@ -87,175 +150,70 @@ class _AddProjectState extends State<AddProject> {
                       : Image.file(_image),
                 ),
               ),
-          Wrap(
-            children: <Widget>[
-              Container(
-                height: 80,
-                width: 80,
-                decoration: BoxDecoration(color: Colors.white , borderRadius: BorderRadius.circular(12)),
-                child: FlatButton(
-                  onPressed: _getImage,
-                  child: _image == null
-                      ? Icon(FontAwesomeIcons.plusCircle)
-                      : Image.file(_image),
-                ),
+              SizedBox(
+                height: 24,
               ),
-              Container(
-                height: 80,
-                width: 80,
-                decoration: BoxDecoration(color: Colors.white , borderRadius: BorderRadius.circular(12)),
-                child: FlatButton(
-                  onPressed: _getImage,
-                  child: _image == null
-                      ? Icon(FontAwesomeIcons.plusCircle)
-                      : Image.file(_image),
-                ),
-              ),
-              Container(
-                height: 80,
-                width: 80,
-                decoration: BoxDecoration(color: Colors.white , borderRadius: BorderRadius.circular(12)),
-                child: FlatButton(
-                  onPressed: _getImage,
-                  child: _image == null
-                      ? Icon(FontAwesomeIcons.plusCircle)
-                      : Image.file(_image),
-                ),
-              ),
-              Container(
-                height: 80,
-                width: 80,
-                decoration: BoxDecoration(color: Colors.white , borderRadius: BorderRadius.circular(12)),
-                child: FlatButton(
-                  onPressed: _getImage,
-                  child: _image == null
-                      ? Icon(FontAwesomeIcons.plusCircle)
-                      : Image.file(_image),
-                ),
+              
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12)),
+                    child: FlatButton(
+                      onPressed: _getImage,
+                      child: _image == null
+                          ? Icon(FontAwesomeIcons.plusCircle)
+                          : Image.file(_image),
+                    ),
+                  ),
+                  Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12)),
+                    child: FlatButton(
+                      onPressed: _getImage,
+                      child: _image == null
+                          ? Icon(FontAwesomeIcons.plusCircle)
+                          : Image.file(_image),
+                    ),
+                  ),
+                  Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12)),
+                    child: FlatButton(
+                      onPressed: _getImage,
+                      child: _image == null
+                          ? Icon(FontAwesomeIcons.plusCircle)
+                          : Image.file(_image),
+                    ),
+                  ),
+                  Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12)),
+                    child: FlatButton(
+                      onPressed: _getImage,
+                      child: _image == null
+                          ? Icon(FontAwesomeIcons.plusCircle)
+                          : Image.file(_image),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-
-          // TextField(
-          //   cursorColor: Colors.white,
-          //   style: TextStyle(color: Colors.white),
-          //   decoration: InputDecoration(
-          //     hintText: 'Title',
-          //     hintStyle: TextStyle(color: Colors.white),
-          //     //border: OutlineInputBorder(borderSide: BorderSide(color: Colors.white))
-          //   ),
-          // ),
-          // SizedBox(
-          //   height: 25,
-          // ),
-          // Text(
-          //   "Description",
-          //   style: TextStyle(color: Colors.white, fontSize: 24),
-          // ),
-          // SizedBox(
-          //   height: 25,
-          // ),
-          // TextField(
-          //   cursorColor: Colors.white,
-          //   style: TextStyle(color: Colors.white),
-          //   decoration: InputDecoration(
-          //     hintText: 'Write Your Description Here!',
-          //     hintStyle: TextStyle(color: Colors.white),
-          //     //border: OutlineInputBorder(borderSide: BorderSide(color: Colors.white))
-          //   ),
-          // ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: <Widget>[
-          //     Text(
-          //       "Tags",
-          //       style: TextStyle(color: Colors.white, fontSize: 24),
-          //     ),
-          //     TextField(
-          //       cursorColor: Colors.white,
-          //       style: TextStyle(color: Colors.white),
-          //       decoration: InputDecoration(
-          //         hintText: '',
-          //         hintStyle: TextStyle(color: Colors.white),
-          //         //border: OutlineInputBorder(borderSide: BorderSide(color: Colors.white))
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: <Widget>[
-          //     Text(
-          //       "Repo Link",
-          //       style: TextStyle(color: Colors.white, fontSize: 24),
-          //     ),
-          //     TextField(
-          //       cursorColor: Colors.white,
-          //       style: TextStyle(color: Colors.white),
-          //       decoration: InputDecoration(
-          //         hintText: 'www.github.com',
-          //         hintStyle: TextStyle(color: Colors.white),
-          //         //border: OutlineInputBorder(borderSide: BorderSide(color: Colors.white))
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          // Stack(
-          //   children: <Widget>[
-          //     Container(
-          //       height: 130,
-          //       width: 354,
-          //       decoration: BoxDecoration(
-          //         color: Colors.white,
-          //         borderRadius: BorderRadius.circular(44),
-          //       ),
-          //       // color: Colors.white,
-          //       // child: Image(image: null),
-          //     ),
-          //     FlatButton(
-          //       child: Container(
-          //           height: 60,
-          //           width: 200,
-          //           decoration: BoxDecoration(
-          //             color: Colors.white,
-          //             borderRadius: BorderRadius.circular(18),
-          //           ),
-          //           // color: Color(0xff434343),
-          //           child: Center(
-          //             child: Text(
-          //               "Repo Link",
-          //               style: TextStyle(color: Colors.white, fontSize: 24),
-          //             ),
-          //           )),
-          //       onPressed: () {},
-          //     ),
-          //   ],
-          // ),
-          // Row(
-          //    children: <Widget>[
-          //      Container(
-          //       height: 80,
-          //       width: 80,
-          //       decoration: BoxDecoration(
-          //         color: Colors.white,
-          //         borderRadius: BorderRadius.circular(12),
-          //       ),
-          //       // color: Colors.white,
-          //       // child: Image(image: null),
-          //     ),
-          //     Container(
-          //       height: 80,
-          //       width: 80,
-          //       decoration: BoxDecoration(
-          //         color: Colors.white,
-          //         borderRadius: BorderRadius.circular(44),
-          //       ),
-          //       // color: Colors.white,
-          //       child: Icon(Icons.add_a_photo),
-          //     ),
-          //    ],
-          // )
-        ],
+        ),
       ),
     );
   }
