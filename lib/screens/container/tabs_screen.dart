@@ -2,6 +2,7 @@ import 'package:cyberwidget_hack_20/components/bottom_navbar.dart';
 import 'package:cyberwidget_hack_20/screens/add_project/add_project.dart';
 import 'package:cyberwidget_hack_20/screens/chat_page/chat_page.dart';
 import 'package:cyberwidget_hack_20/screens/home/home.dart';
+import 'package:cyberwidget_hack_20/screens/profile/profile.dart';
 import 'package:flutter/material.dart';
 
 class TabsScreen extends StatefulWidget {
@@ -21,7 +22,7 @@ class _TabsScreenState extends State<TabsScreen> {
 
   void _selectPage(int index) {
     if (index == 2) {
-      Navigator.of(context).pushNamed(ChatPage.routeName);
+      Navigator.of(context).pushNamed(Profile.routeName);
     } else {
       setState(() {
         _selectedPageIndex = index;
