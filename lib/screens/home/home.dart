@@ -18,12 +18,22 @@ class _HomeState extends State<Home> {
 
   List tags=Tags().get_the_listoftags();
   bool isloading=true;
+  bool istagselected=false;
+  var selectedtag;
   List<Widget> ls=[];
   getvalues(){
     setState(() {
       tags.forEach((element) {
         ls.add(
-          Taglist(element),
+          GestureDetector(
+               onTap: (){
+                 setState(() {
+                   istagselected=true;
+                   selectedtag=element;
+                 });
+               },
+              child: Taglist(element),
+          ),
         );
       });
     });
@@ -88,8 +98,11 @@ class _HomeState extends State<Home> {
               Container(
                 width: width,
                 height: height*0.9,
-                child: StreamBuilder(
-                  stream: Firestore.instance.collection('POST').getDocuments().asStream(),
+                child: istagselected?StreamBuilder(
+//                  Firestore.instance.collection('POST').orderBy
+//                    ('Time',descending: false).getDocuments().asStream(),
+                  stream: Firestore.instance.collection('POST').
+                    getDocuments().asStream(),
                   builder: (context,snapshot){
                     if(!snapshot.hasData || snapshot==null){
                       return Text('No post yet');
@@ -99,6 +112,19 @@ class _HomeState extends State<Home> {
                         itemBuilder: (context,index){
                           return Postlist(snapshot.data.documents[index],index);
                     });
+                  },
+                ):StreamBuilder(
+                  stream: Firestore.instance.collection('POST').
+                  where('Tag',isEqualTo: selectedtag).getDocuments().asStream(),
+                  builder: (context,snapshot){
+                    if(!snapshot.hasData || snapshot==null){
+                      return Text('No post yet');
+                    }
+                    return ListView.builder(
+                        itemCount: snapshot.data.documents.length,
+                        itemBuilder: (context,index){
+                          return Postlist(snapshot.data.documents[index],index);
+                        });
                   },
                 ),
               ),
