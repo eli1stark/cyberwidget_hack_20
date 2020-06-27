@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         //fontFamily: 'Lato',
         accentColor: Colors.grey,
       ),
-      initialRoute: Home.routeName,
+      initialRoute: Welcome.routeName,
       routes: {
         ChatCore.routeName: (context) => ChatCore(),
         ChatPage.routeName: (context) => ChatPage(),
