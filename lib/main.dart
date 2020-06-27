@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 // screens
+import 'screens/add_project/add_project.dart';
 import 'screens/chat_core/chat_core.dart';
 import 'screens/chat_page/chat_page.dart';
 import 'screens/home/home.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         //fontFamily: 'Lato',
         accentColor: Colors.grey,
       ),
-      initialRoute: '/',
+      initialRoute: Home.routeName,
       routes: {
         ChatCore.routeName: (context) => ChatCore(),
         ChatPage.routeName: (context) => ChatPage(),
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         Profile.routeName: (context) => Profile(),
         ProfileSettings.routeName: (context) => ProfileSettings(),
         Welcome.routeName: (context) => Welcome(),
+        AddProject.routeName: (context) => AddProject(),
       },
     );
   }
