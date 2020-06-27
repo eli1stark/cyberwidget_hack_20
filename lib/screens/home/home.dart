@@ -14,10 +14,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
-  List tags=Tags().get_the_listoftags();
-  List<Widget> ls=[];
-  getvalues(){
+  List tags = Tags().get_the_listoftags();
+  List<Widget> ls = [];
+  getvalues() {
     setState(() {
       tags.forEach((element) {
         print('debug $element');
@@ -27,16 +26,18 @@ class _HomeState extends State<Home> {
       });
     });
   }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getvalues();
   }
+
   @override
   Widget build(BuildContext context) {
-    double width=MediaQuery.of(context).size.width;
-    double height=MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: PreferredSize(
         child: TopNavBar(
@@ -46,7 +47,10 @@ class _HomeState extends State<Home> {
           fontAwesomeRight: true,
           textButtonVisibility: false,
           centerTitle: true,
-          title: Text("CYBERWIDGET"),
+          title: Text(
+            "CYBERWIDGET",
+            //have to add font family "edo" or "cyberpunk" in pubspec and stylize this
+          ),
           onTapLeft: () {
             setState(() {
               // here should be a function to exit the app
@@ -65,7 +69,9 @@ class _HomeState extends State<Home> {
         height: height,
         child: Column(
           children: [
-            SizedBox(height: 15.0,),
+            SizedBox(
+              height: 15.0,
+            ),
             Container(
               width: width,
               height: 30.0,
@@ -77,7 +83,6 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-
     );
   }
 }
