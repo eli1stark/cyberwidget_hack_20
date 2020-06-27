@@ -8,7 +8,7 @@ import 'components/gradient_container.dart';
 import 'components/about_container.dart';
 import 'components/buttons_container.dart';
 
-class Welcome extends StatelessWidget {
+class Welcome extends StatefulWidget {
   static const routeName = 'welcome_screen';
   @override
   _WelcomeState createState() => _WelcomeState();
