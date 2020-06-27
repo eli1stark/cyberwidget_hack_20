@@ -1,5 +1,7 @@
 import 'package:cyberwidget_hack_20/components/bottom_navbar.dart';
 import 'package:cyberwidget_hack_20/components/top_navbar.dart';
+import 'package:cyberwidget_hack_20/screens/home/home.dart';
+import 'package:cyberwidget_hack_20/screens/welcome/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:io';
@@ -117,8 +119,11 @@ class _AddProjectState extends State<AddProject> {
               }
               _formkey.currentState.save();
               print(_title);
+              Navigator.pushNamed(context, Home.routeName);
             },
-            onTapLeft: () {},
+            onTapLeft: () {
+              Navigator.pushNamed(context, Home.routeName);
+            },
           ),
           preferredSize: Size.fromHeight(kToolbarHeight),
         ),
