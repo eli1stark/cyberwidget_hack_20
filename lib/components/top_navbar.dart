@@ -1,3 +1,4 @@
+import 'package:cyberwidget_hack_20/components/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -26,6 +27,8 @@ class TopNavBar extends StatelessWidget {
     this.onTapText,
     this.textButtonVisibility = false,
     this.textString,
+    this.title,
+    this.centerTitle
   });
 
   final IconData iconLeft;
@@ -35,6 +38,8 @@ class TopNavBar extends StatelessWidget {
   final FlatButton textButton;
   final Function onTapText;
   final bool textButtonVisibility;
+  final Widget title;
+  final bool centerTitle;
 
   /// If you want to add Font Awesome icon to the left then fontAwesome must be true
   /// If material icon then fontAwesome must be false
@@ -53,18 +58,20 @@ class TopNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0,
+      title: this.title,
+      centerTitle: this.centerTitle,
       backgroundColor: Colors.transparent,
       leading: IconButton(
         icon: fontAwesomeLeft
             ? FaIcon(
                 iconLeft,
                 color: Colors.white,
-                size: 35.0,
+                size: kTopNavBarSizeIcon,
               )
             : Icon(
                 iconLeft,
                 color: Colors.white,
-                size: 35.0,
+                size: kTopNavBarSizeIcon,
               ),
         onPressed: onTapLeft,
       ),
@@ -74,12 +81,12 @@ class TopNavBar extends StatelessWidget {
               ? FaIcon(
                   iconRight,
                   color: Colors.white,
-                  size: 35.0,
+                  size: kTopNavBarSizeIcon,
                 )
               : Icon(
                   iconRight,
                   color: Colors.white,
-                  size: 35.0,
+                  size: kTopNavBarSizeIcon,
                 ),
           onPressed: onTapRight,
         ),
