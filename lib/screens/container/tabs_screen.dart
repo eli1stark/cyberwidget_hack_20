@@ -6,7 +6,7 @@ import 'package:cyberwidget_hack_20/screens/profile/profile.dart';
 import 'package:flutter/material.dart';
 
 class TabsScreen extends StatefulWidget {
-  TabsScreen({Key key}) : super(key: key);
+  static const routeName = '/tabs_screen';
 
   @override
   _TabsScreenState createState() => _TabsScreenState();

@@ -71,6 +71,9 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 13f78260f9ea76921b86f43199d2eda68be6ee30
     version: "2.1.1"
   crypto:
     dependency: transitive
@@ -85,8 +88,11 @@ packages:
       name: cupertino_icons
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
+=======
 =======
 >>>>>>> d82060738226b1b7091f02232759bdb92687f9af
+>>>>>>> 13f78260f9ea76921b86f43199d2eda68be6ee30
     version: "0.1.3"
   firebase:
     dependency: transitive
@@ -209,6 +215,8 @@ packages:
     source: hosted
     version: "2.1.12"
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
   image_picker:
     dependency: "direct main"
     description:
@@ -225,6 +233,7 @@ packages:
     version: "1.1.0"
 =======
 >>>>>>> d82060738226b1b7091f02232759bdb92687f9af
+>>>>>>> 13f78260f9ea76921b86f43199d2eda68be6ee30
   js:
     dependency: transitive
     description:
@@ -246,6 +255,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.8"
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   path:
     dependency: transitive
     description:
@@ -281,6 +297,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.4"
+  provider:
+    dependency: "direct main"
+    description:
+      name: provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.1.3"
   quiver:
     dependency: transitive
     description:
@@ -365,4 +388,8 @@ packages:
     version: "3.6.1"
 sdks:
   dart: ">=2.7.0 <3.0.0"
+<<<<<<< HEAD
+  flutter: ">=1.16.0 <2.0.0"
+=======
   flutter: ">=1.12.13+hotfix.4 <2.0.0"
+>>>>>>> 13f78260f9ea76921b86f43199d2eda68be6ee30
