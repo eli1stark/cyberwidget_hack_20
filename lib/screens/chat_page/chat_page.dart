@@ -16,7 +16,9 @@ class ChatPage extends StatelessWidget {
           iconRight: Icons.search,
           fontAwesomeLeft: false,
           fontAwesomeRight: false,
-          onTapLeft: () {},
+          onTapLeft: () {
+            Navigator.pop(context);
+          },
           onTapRight: () {},
           title: Text("Messages"),
           centerTitle: true,
