@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         value: EmailAuthService().user,
         child: MaterialApp(
         theme: ThemeData(
-          primaryColor: Color(0xff1A053E),
+          primaryColor: Colors.white,
           canvasColor: Color(0xff1A053E),
           //fontFamily: 'Lato',
           accentColor: Colors.grey,

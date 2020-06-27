@@ -55,6 +55,9 @@ class _HomeState extends State<Home> {
           centerTitle: true,
           title: Text(
             "CYBERWIDGET",
+            style: TextStyle(
+              color: Colors.white,
+            ),
             //have to add font family "edo" or "cyberpunk" in pubspec and stylize this
           ),
           onTapLeft: () {

@@ -55,7 +55,7 @@ class _AddProjectState extends State<AddProject> {
     );
   }
 
-  Widget _buildLink() {
+  Widget _buildTags() {
     return TextFormField(
       decoration: InputDecoration(
         labelText: 'Tag',
@@ -71,9 +71,12 @@ class _AddProjectState extends State<AddProject> {
     );
   }
 
-  Widget _buildTags() {
+  Widget _buildLink() {
     return TextFormField(
+      
       decoration: InputDecoration(
+        hintStyle: TextStyle(color: Colors.white),
+        filled: true,
         labelText: 'Git Repo Link',
       ),
       keyboardType: TextInputType.url,
