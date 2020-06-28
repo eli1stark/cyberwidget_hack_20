@@ -70,19 +70,19 @@ class _ProjectScreenState extends State<ProjectScreen> {
                   scrollDirection: Axis.horizontal,
                   children: [
                     Container(
-                        width: width,
+                        width: width*0.5,
                         height: height*0.4,
                         child: Image.network(widget.str['photo1'],fit: BoxFit.fill,)),
                     Container(
-                        width: width,
+                        width: width*0.5,
                         height: height*0.4,
                         child: Image.network(widget.str['photo2'],fit: BoxFit.fill,)),
                     Container(
-                        width: width,
+                        width: width*0.5,
                         height: height*0.4,
                         child: Image.network(widget.str['photo3'],fit: BoxFit.fill,)),
                     Container(
-                        width: width,
+                        width: width*0.5,
                         height: height*0.4,
                         child: Image.network(widget.str['photo4'],fit: BoxFit.fill,)),
                   ],

@@ -94,10 +94,8 @@ class _HomeState extends State<Home> {
                 width: width,
                 height: height*0.9,
                 child: StreamBuilder(
-//                  Firestore.instance.collection('POST').orderBy
-//                    ('time',descending: false).getDocuments().asStream(),
-                  stream: Firestore.instance.collection('posts').
-                  getDocuments().asStream(),
+                  stream: Firestore.instance.collection('posts').orderBy
+                    ('time',descending: false).getDocuments().asStream(),
                   builder: (context,snapshot){
                     if(!snapshot.hasData || snapshot==null){
                       return Center(child: Text('No post yet'));
