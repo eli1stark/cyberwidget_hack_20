@@ -16,18 +16,14 @@ class _TabsScreenState extends State<TabsScreen> {
   List<Map<String, Widget>> _pages = [
     {'page': Home()},
     {'page': AddProject()},
-    {'page': ChatPage()}
+    {'page': Profile()}
   ];
   int _selectedPageIndex = 0;
 
   void _selectPage(int index) {
-    if (index == 2) {
-      Navigator.of(context).pushNamed(Profile.routeName);
-    } else {
-      setState(() {
-        _selectedPageIndex = index;
-      });
-    }
+    setState(() {
+      _selectedPageIndex = index;
+    });
   }
 
   @override
