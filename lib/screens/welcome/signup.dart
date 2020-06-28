@@ -1,4 +1,9 @@
 // helpers
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cyberwidget_hack_20/screens/home/home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -206,39 +211,67 @@ class _SignUpState extends State<SignUp> {
                                     ]).show();
                               } else {
                                 pd.show();
-                                // Trying to register the user
-                                dynamic result =
-                                    await _auth.registerWithEmailAndPassword(
-                                  email.text,
-                                  password.text,
-                                  username.text,
-                                  fstname.text,
-                                  lstname.text,
-                                );
-                                // If success:
-                                if (result != null) {
-                                  pd.hide();
-                                  Navigator.pushNamed(
-                                    context,
-                                    TabsScreen.routeName,
-                                  );
-                                } else {
+                                await FirebaseAuth.instance.createUserWithEmailAndPassword
+                                  (email: email.text, password: password.text).then((value) async {
+                                    FirebaseUser user=await FirebaseAuth.instance.currentUser();
+                                    var uid=user.uid;
+                                    List userimage=['assets/char_assets/c1.png','assets/char_assets/c2.png','assets/char_assets/c3.png',
+                                      'assets/char_assets/c4.png','assets/char_assets/c5.png','assets/char_assets/c6.png','assets/char_assets/c7.png',
+                                      'assets/char_assets/c8.png'];
+                                    List bgimage=['assets/bg_assets/bg1.png','assets/bg_assets/bg2.png',
+                                      'assets/bg_assets/bg3.png','assets/bg_assets/bg4.png',
+                                      'assets/bg_assets/bg5.png','assets/bg_assets/bg6.png',];
+                                    var ran = Random();
+                                    //this is used to assign the random bg and avatar for user's
+                                    var l= ran.nextInt(userimage.length);
+                                    var b=ran.nextInt(bgimage.length);
+                                    await Firestore.instance.collection('users').document(uid)
+                                    .setData({"about":{
+                                      "avatar":userimage[l],
+                                      'background':bgimage[b],
+                                      'firstname':fstname.text,
+                                      'lastname':lstname.text,
+                                      'signInMethod':'email',
+                                      'username':username.text,
+                                      'linkedIn':'',
+                                      'gitHub':''
+                                    }
+                                    }).then((value) {
+                                      pd.hide();
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>TabsScreen()));
+                                    }).catchError((err){
+                                      pd.hide();
+                                      Alert(
+                                          context: context,
+                                          type: AlertType.warning,
+                                          title: 'Something wrong',
+                                          buttons: [
+                                            DialogButton(
+                                              child: Text('Okay'),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              color: Color(0xffF1009C),
+                                            )
+                                          ]).show();
+                                    });
+                                }).catchError((err){
                                   pd.hide();
                                   Alert(
-                                    context: context,
-                                    type: AlertType.error,
-                                    title: 'Something wrong',
-                                    buttons: [
-                                      DialogButton(
-                                        child: Text('Okay'),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        color: Color(0xffF1009C),
-                                      )
-                                    ],
-                                  ).show();
-                                }
+                                      context: context,
+                                      type: AlertType.warning,
+                                      title: 'Something wrong',
+                                      buttons: [
+                                        DialogButton(
+                                          child: Text('Okay'),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          color: Color(0xffF1009C),
+                                        )
+                                      ]).show();
+
+                                });
                                 email.clear();
                                 username.clear();
                                 fstname.clear();

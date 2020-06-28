@@ -341,6 +341,7 @@ class _ChatviewState extends State<Chatview> {
                       buttons: [
                         DialogButton(
                           child: Text('Okay'),
+                          color: Color(0xffF1009C),
                           onPressed: (){
                             flname.clear();
                             Navigator.pop(context);
@@ -354,7 +355,17 @@ class _ChatviewState extends State<Chatview> {
                       context: context,
                       title: 'Error',
                       type: AlertType.error,
-                      desc: '$err')
+                      desc: '$err',
+                      buttons: [
+                        DialogButton(
+                          child: Text('Okay'),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          color: Color(0xffF1009C),
+                        )
+                      ]
+                  )
                       .show();
                 });
               },

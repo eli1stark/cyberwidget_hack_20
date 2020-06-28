@@ -1,4 +1,6 @@
 // helpers
+import 'package:cyberwidget_hack_20/screens/home/home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -152,34 +154,26 @@ class _SignInState extends State<SignIn> {
                                     ]).show();
                               } else {
                                 pd.show();
-                                dynamic result =
-                                    await _auth.signInWithEmailAndPassword(
-                                  email.text,
-                                  password.text,
-                                );
-                                if (result != null) {
-                                  pd.hide();
-                                  Navigator.pushNamed(
-                                    context,
-                                    TabsScreen.routeName,
-                                  );
-                                } else {
+                                await FirebaseAuth.instance.signInWithEmailAndPassword
+                                  (email: email.text, password: password.text).then((value) {
+                                    pd.hide();
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>TabsScreen()));
+                                }).catchError((err){
                                   pd.hide();
                                   Alert(
-                                    context: context,
-                                    type: AlertType.error,
-                                    title: 'Something wrong',
-                                    buttons: [
-                                      DialogButton(
-                                        child: Text('Okay'),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        color: Color(0xffF1009C),
-                                      )
-                                    ],
-                                  ).show();
-                                }
+                                      context: context,
+                                      type: AlertType.warning,
+                                      title: 'Something wrong',
+                                      buttons: [
+                                        DialogButton(
+                                          child: Text('Okay'),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          color: Color(0xffF1009C),
+                                        )
+                                      ]).show();
+                                });
                                 email.clear();
                                 password.clear();
                               }
