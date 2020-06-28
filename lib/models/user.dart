@@ -8,3 +8,13 @@ class User {
 
   final String uid;
 }
+
+class UserData {
+  UserData({
+    this.uid,
+    this.about,
+  });
+
+  final String uid;
+  final Map about;
+}

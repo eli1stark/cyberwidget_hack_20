@@ -1,4 +1,10 @@
+// Eli Stark
+// DANGER ZONE
+// Don't edit this file on your own
+// Contact Eli please
+
 import 'package:cyberwidget_hack_20/models/user.dart';
+import 'package:cyberwidget_hack_20/services/database/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class EmailAuthService {
@@ -30,13 +36,28 @@ class EmailAuthService {
   }
 
   // register with email and password
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future registerWithEmailAndPassword(
+    String email,
+    String password,
+    String username,
+    String firstName,
+    String lastName,
+  ) async {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       FirebaseUser user = result.user;
+
+      // create a new document for the user with uid
+      await DatabaseService(uid: user.uid).updateUserAbout({
+        'username': username,
+        'firstName': firstName,
+        'lastName': lastName,
+        'signInMethod': 'email',
+      });
+
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
@@ -47,7 +68,6 @@ class EmailAuthService {
   // sign out
   Future signOut() async {
     try {
-      print('success');
       return await _auth.signOut();
     } catch (e) {
       print(e.toString());
