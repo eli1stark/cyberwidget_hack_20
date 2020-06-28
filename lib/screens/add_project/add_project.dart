@@ -29,7 +29,7 @@ class _AddProjectState extends State<AddProject> {
     var uid=user.uid;
     await Firestore.instance.collection('users').document(uid).get().then((value) {
       setState(() {
-        username=value.data['username'];
+        username=value.data['about']['username'];
         currentuid=uid;
       });
     }).catchError((err){
@@ -424,6 +424,8 @@ class _AddProjectState extends State<AddProject> {
                     children: [
                       RaisedButton(
                         onPressed: () async{
+                          print(username);
+                          print(currentuid);
                           if(title.text.isEmpty || description.text.isEmpty || gitlink.text.isEmpty){
                             Alert(
                               context: context,
