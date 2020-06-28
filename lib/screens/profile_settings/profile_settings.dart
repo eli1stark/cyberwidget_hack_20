@@ -247,6 +247,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                         _profileData['linkedin'] = value;
                       },
                     ),
+                    SizedBox(height: 70.0,),
                   ],
                 ),
               )
