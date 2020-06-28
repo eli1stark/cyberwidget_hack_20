@@ -92,7 +92,7 @@ class _HomeState extends State<Home> {
               SizedBox(height: 20.0,),
               Container(
                 width: width,
-                height: height*0.9,
+                height: height*0.8,
                 child: StreamBuilder(
                   stream: Firestore.instance.collection('posts').orderBy
                     ('time',descending: true).getDocuments().asStream(),

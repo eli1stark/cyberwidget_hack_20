@@ -1,346 +1,541 @@
-import 'package:cyberwidget_hack_20/components/bottom_navbar.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cyberwidget_hack_20/components/top_navbar.dart';
-import 'package:cyberwidget_hack_20/screens/home/home.dart';
-import 'package:cyberwidget_hack_20/screens/welcome/welcome.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:path/path.dart' as Path;
 import 'dart:io';
-import 'package:cyberwidget_hack_20/components/tag_list.dart';
-import 'package:flutter_tagging/flutter_tagging.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+
 
 class AddProject extends StatefulWidget {
   static const routeName = '/add_project';
-
   @override
   _AddProjectState createState() => _AddProjectState();
 }
 
 class _AddProjectState extends State<AddProject> {
-  File _image2;
-  File _image3;
-  File _image4;
-  File _image5;
-  String _title;
-  String _discription;
-  String _link;
-  String _tags;
+  TextEditingController title,description,gitlink,tag1,tag2;
+  File img1,img2,img3,img4;
+  var Listofimages=[];
+  ProgressDialog pd;
+  var currentuid,username;
 
-  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
-
-  Widget _buildTitle() {
-    return TextFormField(
-      style: TextStyle(color: Colors.black),
-      decoration: InputDecoration(
-        hintStyle: TextStyle(color: Colors.white),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Color(0xffF1009C),
-          ),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        labelStyle: TextStyle(color: Colors.black),
-        filled: true,
-        fillColor: Colors.grey[200],
-        labelText: 'Title',
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Color(0xffF1009C),
-          ),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      ),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'Title is Required';
-        }
-      },
-      onSaved: (String value) {
-        _title = value;
-      },
-    );
-  }
-
-  Widget _buildDescription() {
-    return TextFormField(
-      style: TextStyle(color: Colors.black),
-      decoration: InputDecoration(
-        hintStyle: TextStyle(color: Colors.white),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Color(0xffF1009C),
-          ),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        labelStyle: TextStyle(color: Colors.black),
-        filled: true,
-        fillColor: Colors.grey[200],
-        labelText: 'Description',
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Color(0xffF1009C),
-          ),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      ),
-      keyboardType: TextInputType.multiline,
-      maxLines: 5,
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'Description is Required';
-        }
-      },
-      onSaved: (String value) {
-        _discription = value;
-      },
-    );
-  }
-
-  Widget _buildTags() {
-    return FlutterTagging(
-      textFieldDecoration: InputDecoration(
-          border: OutlineInputBorder(),
-          labelStyle: TextStyle(color: Colors.black),
-          hintText: "Tags",
-          labelText: "Enter tags",
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Color(0xffF1009C),
-            ),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          filled: true,
-          fillColor: Colors.grey[200],
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Color(0xffF1009C),
-            ),
-            borderRadius: BorderRadius.circular(10.0),
-          )),
-      addButtonWidget: _buildAddButton(),
-      chipsColor: Colors.pinkAccent,
-      chipsFontColor: Colors.white,
-      deleteIcon: Icon(Icons.cancel, color: Colors.white),
-      chipsPadding: EdgeInsets.all(2.0),
-      chipsFontSize: 14.0,
-      chipsSpacing: 5.0,
-      chipsFontFamily: 'helvetica_neue_light',
-      suggestionsCallback: (pattern) async {
-        return await TagSearchService.getSuggestions(pattern);
-      },
-      onChanged: (result) {
-        setState(() {
-          _tags = result.toString();
-        });
-      },
-    );
-  }
-
-  Widget _buildLink() {
-    return TextFormField(
-      style: TextStyle(color: Colors.black),
-      decoration: InputDecoration(
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Color(0xffF1009C),
-          ),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        
-        filled: true,
-        fillColor: Colors.grey[200],
-        labelText: 'Git Repo Link',
-        labelStyle: TextStyle(color: Colors.black),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Color(0xffF1009C),
-          ),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      ),
-      keyboardType: TextInputType.url,
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'Link is Required';
-        }
-      },
-      onSaved: (String value) {
-        _link = value;
-      },
-    );
-  }
-
-  Future _getImage2() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      _image2 = image;
+  getcurrentdetails() async{
+    FirebaseUser user=await FirebaseAuth.instance.currentUser();
+    var uid=user.uid;
+    await Firestore.instance.collection('users').document(uid).get().then((value) {
+      setState(() {
+        username=value.data['username'];
+        currentuid=uid;
+      });
+    }).catchError((err){
+      print('Error $err');
     });
+
+
   }
 
-  Future _getImage3() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
-    setState(() {
-      _image2 = image;
-    });
+  List<String> ls=['Arts & Design','Augmented Reality','Auto & Vehicles','Beauty','Books','Business','Comics'
+    ,'Communication','Dating','Daydream','Education','Entertainment','Events','Finance','Food & Drinks'
+    ,'Health & Fitness','House','Libraries','Lifestyle','Maps & Navigation','Medical','Music & Audio'
+    ,'News & Magaziness','parenting','Personalisation','Photography','Productivity','Shopping','Social'
+    ,'Sports','Tools','Travel & Local','UI Design','UI/UX Design','Video Players','Wear Os','Weather',];
+
+
+  var currenttag1,currenttag2;
+  @override
+  void initState() {
+    currenttag1=ls[0];
+    currenttag2=ls[0];
+    title=TextEditingController(text: "");
+    description=TextEditingController(text: "");
+    gitlink=TextEditingController(text: "");
+    super.initState();
+    getcurrentdetails();
   }
-
-  Future _getImage4() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      _image4 = image;
-    });
-  }
-
-  Future _getImage5() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      _image5 = image;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: PreferredSize(
-          child: TopNavBar(
-            iconLeft: Icons.arrow_back,
-            fontAwesomeLeft: false,
-            fontAwesomeRight: false,
-            textButtonVisibility: true,
-            textString: "Submit",
-            onTapText: () {
-              if (!_formkey.currentState.validate()) {
-                return;
-              }
-              _formkey.currentState.save();
-              print(_title);
-              Navigator.pushNamed(context, Home.routeName);
-            },
-            onTapLeft: () {
-              Navigator.pushNamed(context, Home.routeName);
-            },
-          ),
-          preferredSize: Size.fromHeight(kToolbarHeight),
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    pd = ProgressDialog(context);
+    pd.style(
+      message: 'Please wait',
+      elevation: 6.0,
+      borderRadius: 2.0,
+    );
+    return Scaffold(
+      appBar: PreferredSize(
+        child: TopNavBar(
+          iconLeft: Icons.arrow_back,
+          iconRight: Icons.search,
+          fontAwesomeLeft: false,
+          fontAwesomeRight: false,
+          onTapLeft: () {
+            Navigator.pop(context);
+          },
+          onTapRight: () {},
+          title: Text("Add Project"),
+          centerTitle: true,
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              children: <Widget>[
-                Form(
-                    key: _formkey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        _buildTitle(),
-                        SizedBox(
-                          height: 12,
+        preferredSize: Size.fromHeight(kToolbarHeight),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          width: width,
+          height: height,
+          child: Container(
+            width: width*0.9,
+            height: height,
+            child: Padding(
+              padding: const EdgeInsets.only(left:10.0,right: 10.0),
+              child: Column(
+                children: [
+                  SizedBox(height: 20.0,),
+                  TextField(
+                    controller: title,
+                    cursorColor: Colors.white,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: 'Title',
+                      hintStyle: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(height: 20.0,),
+                  TextField(
+                    controller: description,
+                    maxLines: 2,
+                    cursorColor: Colors.white,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: 'Description',
+                      hintStyle: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(height: 20.0,),
+                  TextField(
+                    controller: gitlink,
+                    cursorColor: Colors.white,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: 'GitHub Link',
+                      hintStyle: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(height: 20.0,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Tag1',style: TextStyle(color: Colors.white,fontSize: 15.0),),
+                      DropdownButton<String>(
+                        elevation: 6,
+                        items: ls.map((String tag1val){
+                          return DropdownMenuItem<String>(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                              child: Text(tag1val),
+                            ),
+                            value: tag1val,
+                          );
+                        }).toList(),
+                        onChanged: (String val){
+                          setState(() {
+                            this.currenttag1=val;
+                          });
+                          print(val);
+                        },
+                        value: currenttag1,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20.0,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Tag1',style: TextStyle(color: Colors.white,fontSize: 15.0),),
+                      DropdownButton<String>(
+                        elevation: 6,
+                        items: ls.map((String tag1val){
+                          return DropdownMenuItem<String>(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                              child: Text(tag1val),
+                            ),
+                            value: tag1val,
+                          );
+                        }).toList(),
+                        onChanged: (String val){
+                          setState(() {
+                            this.currenttag2=val;
+                          });
+                          print(val);
+                        },
+                        value: currenttag2,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20.0,),
+                  GestureDetector(
+                    onTap: () async{
+                      if(Listofimages.length<5){
+                        img1 = await FilePicker.getFile();
+                        StorageReference sr = FirebaseStorage.instance
+                            .ref()
+                            .child("${Path.basename(img1.path)}");
+                        StorageUploadTask uptsk = sr.putFile(img1);
+                        pd.show();
+                        await uptsk.onComplete;
+                        sr.getDownloadURL().then((suc) {
+                          pd.hide();
+                          print(suc);
+                          setState(() {
+                            Listofimages.add(suc.toString());
+                          });
+                          Alert(
+                              context: context,
+                              title: 'Uploaded Image1',
+                              type: AlertType.success,
+                              buttons: [
+                                DialogButton(
+                                  child: Text('Okay'),
+                                  color: Color(0xffF1009C),
+                                  onPressed: (){
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ]
+                          ).show();
+                        }).catchError((err){
+                          pd.hide();
+                          Alert(
+                              context: context,
+                              title: 'Error',
+                              type: AlertType.error,
+                              buttons: [
+                                DialogButton(
+                                  child: Text('Okay'),
+                                  color: Color(0xffF1009C),
+                                  onPressed: (){
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ]
+                          ).show();
+                        });
+                      }
+                    },
+                    child: Container(
+                      width: width*0.78,
+                      height: 40.0,
+                      decoration: BoxDecoration(
+                        color: Color(0xffF1009C),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Center(child: Text('Image1')),
+                    ),
+                  ),
+                  SizedBox(height: 20.0,),
+                  GestureDetector(
+                    onTap: () async{
+                      if(Listofimages.length<5){
+                        img2 = await FilePicker.getFile();
+                        StorageReference sr = FirebaseStorage.instance
+                            .ref()
+                            .child("${Path.basename(img2.path)}");
+                        StorageUploadTask uptsk = sr.putFile(img2);
+                        pd.show();
+                        await uptsk.onComplete;
+                        sr.getDownloadURL().then((suc) {
+                          pd.hide();
+                          print(suc);
+                          setState(() {
+                            Listofimages.add(suc.toString());
+                          });
+                          Alert(
+                              context: context,
+                              title: 'Uploaded Image2',
+                              type: AlertType.success,
+                              buttons: [
+                                DialogButton(
+                                  child: Text('Okay'),
+                                  color: Color(0xffF1009C),
+                                  onPressed: (){
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ]
+                          ).show();
+                        }).catchError((err){
+                          pd.hide();
+                          Alert(
+                              context: context,
+                              title: 'Error',
+                              type: AlertType.error,
+                              buttons: [
+                                DialogButton(
+                                  child: Text('Okay'),
+                                  color: Color(0xffF1009C),
+                                  onPressed: (){
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ]
+                          ).show();
+                        });
+                      }
+                    },
+                    child: Container(
+                      width: width*0.78,
+                      height: 40.0,
+                      decoration: BoxDecoration(
+                        color: Color(0xffF1009C),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Center(child: Text('Image2')),
+                    ),
+                  ),
+                  SizedBox(height: 20.0,),
+                  GestureDetector(
+                    onTap: () async{
+                      if(Listofimages.length<5){
+                        img3 = await FilePicker.getFile();
+                        StorageReference sr = FirebaseStorage.instance
+                            .ref()
+                            .child("${Path.basename(img3.path)}");
+                        StorageUploadTask uptsk = sr.putFile(img3);
+                        pd.show();
+                        await uptsk.onComplete;
+                        sr.getDownloadURL().then((suc) {
+                          pd.hide();
+                          print(suc);
+                          setState(() {
+                            Listofimages.add(suc.toString());
+                          });
+                          Alert(
+                              context: context,
+                              title: 'Uploaded Image3',
+                              type: AlertType.success,
+                              buttons: [
+                                DialogButton(
+                                  child: Text('Okay'),
+                                  color: Color(0xffF1009C),
+                                  onPressed: (){
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ]
+                          ).show();
+                        }).catchError((err){
+                          pd.hide();
+                          Alert(
+                              context: context,
+                              title: 'Error',
+                              type: AlertType.error,
+                              buttons: [
+                                DialogButton(
+                                  child: Text('Okay'),
+                                  color: Color(0xffF1009C),
+                                  onPressed: (){
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ]
+                          ).show();
+                        });
+                      }
+                    },
+                    child: Container(
+                      width: width*0.78,
+                      height: 40.0,
+                      decoration: BoxDecoration(
+                        color: Color(0xffF1009C),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Center(child: Text('Image3')),
+                    ),
+                  ),
+                  SizedBox(height: 20.0,),
+                  GestureDetector(
+                    onTap: () async{
+                      if(Listofimages.length<5){
+                        img4 = await FilePicker.getFile();
+                        StorageReference sr = FirebaseStorage.instance
+                            .ref()
+                            .child("${Path.basename(img4.path)}");
+                        StorageUploadTask uptsk = sr.putFile(img4);
+                        pd.show();
+                        await uptsk.onComplete;
+                        sr.getDownloadURL().then((suc) {
+                          pd.hide();
+                          print(suc);
+                          setState(() {
+                            Listofimages.add(suc.toString());
+                          });
+                          Alert(
+                              context: context,
+                              title: 'Uploaded Image4',
+                              type: AlertType.success,
+                              buttons: [
+                                DialogButton(
+                                  child: Text('Okay'),
+                                  color: Color(0xffF1009C),
+                                  onPressed: (){
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ]
+                          ).show();
+                        }).catchError((err){
+                          pd.hide();
+                          Alert(
+                              context: context,
+                              title: 'Error',
+                              type: AlertType.error,
+                              buttons: [
+                                DialogButton(
+                                  child: Text('Okay'),
+                                  color: Color(0xffF1009C),
+                                  onPressed: (){
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ]
+                          ).show();
+                        });
+                      }
+                    },
+                    child: Container(
+                      width: width*0.78,
+                      height: 40.0,
+                      decoration: BoxDecoration(
+                        color: Color(0xffF1009C),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Center(child: Text('Image4')),
+                    ),
+                  ),
+                  SizedBox(height: 20.0,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      RaisedButton(
+                        onPressed: () async{
+                          if(title.text.isEmpty || description.text.isEmpty || gitlink.text.isEmpty){
+                            Alert(
+                              context: context,
+                              title: 'Enter all the fields',
+                              type: AlertType.warning,
+                                buttons: [
+                                  DialogButton(
+                                    child: Text('Okay'),
+                                    color: Color(0xffF1009C),
+                                    onPressed: (){
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ]
+                            ).show();
+                          }else if(Listofimages.length<4){
+                            Alert(
+                                context: context,
+                                title: 'Upload 4 images',
+                                type: AlertType.warning,
+                                buttons: [
+                                  DialogButton(
+                                    child: Text('Okay'),
+                                    color: Color(0xffF1009C),
+                                    onPressed: (){
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ]
+                            ).show();
+                          }else if(username==null || currentuid==null){
+                            Alert(
+                                context: context,
+                                title: 'Something wrong',
+                                type: AlertType.warning,
+                                buttons: [
+                                  DialogButton(
+                                    child: Text('Okay'),
+                                    color: Color(0xffF1009C),
+                                    onPressed: (){
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ]
+                            ).show();
+                          }else{
+                            pd.show();
+                            await Firestore.instance.collection('posts').add({
+                              'description':description.text,
+                              'gitLink':gitlink.text,
+                              'photo1':Listofimages[0],
+                              'photo2':Listofimages[1],
+                              'photo3':Listofimages[2],
+                              'photo4':Listofimages[3],
+                              'tag1':currenttag1,
+                              'tag2':currenttag2,
+                              'title':title.text,
+                              'uid':currentuid,
+                              'username':username,
+                              'time':DateTime.now().millisecondsSinceEpoch.toString(),
+                            }).then((value) {
+                              pd.hide();
+                              Alert(
+                                  context: context,
+                                  title: 'Successfully uploaded',
+                                  type: AlertType.success,
+                                  buttons: [
+                                    DialogButton(
+                                      child: Text('Okay'),
+                                      color: Color(0xffF1009C),
+                                      onPressed: (){
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ]
+                              ).show();
+                            }).catchError((err){
+                              pd.hide();
+                              Alert(
+                                  context: context,
+                                  title: 'Something wrong',
+                                  type: AlertType.error,
+                                  buttons: [
+                                    DialogButton(
+                                      child: Text('Okay'),
+                                      color: Color(0xffF1009C),
+                                      onPressed: (){
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ]
+                              ).show();
+                            });
+                          }
+                        },
+                        color: Colors.purpleAccent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)
                         ),
-                        _buildDescription(),
-                        SizedBox(
-                          height: 12,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text('Submit'),
                         ),
-                        _buildTags(),
-                        SizedBox(
-                          height: 12,
-                        ),
-                        _buildLink(),
-                      ],
-                    )),
-                SizedBox(
-                  height: 24,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Container(
-                      height: 80,
-                      width: 80,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12)),
-                      child: FlatButton(
-                        onPressed: _getImage2,
-                        child: _image2 == null
-                            ? Icon(FontAwesomeIcons.plusCircle, color: Colors.black)
-                            : Image.file(_image2),
-                      ),
-                    ),
-                    Container(
-                      height: 80,
-                      width: 80,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12)),
-                      child: FlatButton(
-                        onPressed: _getImage3,
-                        child: _image3 == null
-                            ? Icon(FontAwesomeIcons.plusCircle, color: Colors.black,)
-                            : Image.file(_image3),
-                      ),
-                    ),
-                    Container(
-                      height: 80,
-                      width: 80,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12)),
-                      child: FlatButton(
-                        onPressed: _getImage4,
-                        child: _image4 == null
-                            ? Icon(FontAwesomeIcons.plusCircle, color: Colors.black)
-                            : Image.file(_image4),
-                      ),
-                    ),
-                    Container(
-                      height: 80,
-                      width: 80,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12)),
-                      child: FlatButton(
-                        onPressed: _getImage5,
-                        child: _image5 == null
-                            ? Icon(FontAwesomeIcons.plusCircle, color: Colors.black)
-                            : Image.file(_image5),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
   }
-}
-
-Widget _buildAddButton() {
-  return Container(
-    padding: EdgeInsets.all(8.0),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(20.0)),
-      color: Colors.pinkAccent,
-    ),
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Icon(
-          Icons.add,
-          color: Colors.white,
-          size: 15.0,
-        ),
-        Text(
-          "Add New Tag",
-          style: TextStyle(color: Colors.white, fontSize: 14.0),
-        ),
-      ],
-    ),
-  );
 }
