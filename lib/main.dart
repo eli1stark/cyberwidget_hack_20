@@ -6,7 +6,6 @@ import 'models/user.dart';
 // screens
 import 'package:cyberwidget_hack_20/wrapper.dart';
 import 'screens/add_project/add_project.dart';
-import 'screens/chat_core/chat_core.dart';
 import 'screens/chat_page/chat_page.dart';
 import 'screens/home/home.dart';
 import 'screens/profile/profile.dart';
@@ -48,7 +47,6 @@ class MyApp extends StatelessWidget {
           '/': (context) => Wrapper(),
           // routes:
           TabsScreen.routeName: (context) => TabsScreen(),
-          ChatCore.routeName: (context) => ChatCore(),
           ChatPage.routeName: (context) => ChatPage(),
           Home.routeName: (context) => Home(),
           Profile.routeName: (context) => Profile(),

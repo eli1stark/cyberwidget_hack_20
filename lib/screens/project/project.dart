@@ -3,9 +3,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cyberwidget_hack_20/components/top_navbar.dart';
 import 'package:cyberwidget_hack_20/screens/chat_page/chat_page.dart';
+import 'package:cyberwidget_hack_20/screens/chat_page/chatview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
@@ -18,6 +21,7 @@ class ProjectScreen extends StatefulWidget {
 }
 
 class _ProjectScreenState extends State<ProjectScreen> {
+  ProgressDialog pd;
 
   @override
   void initState() {
@@ -28,6 +32,8 @@ class _ProjectScreenState extends State<ProjectScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    pd=ProgressDialog(context);
+    pd.style(message: 'Loading...');
     return Scaffold(
       appBar: PreferredSize(
         child: TopNavBar(
@@ -72,19 +78,19 @@ class _ProjectScreenState extends State<ProjectScreen> {
                     Container(
                         width: width*0.5,
                         height: height*0.4,
-                        child: Image.network(widget.str['photo1'],fit: BoxFit.fill,)),
+                        child: Image.network(widget.str['photo1'],fit: BoxFit.fill,),),
                     Container(
                         width: width*0.5,
                         height: height*0.4,
-                        child: Image.network(widget.str['photo2'],fit: BoxFit.fill,)),
+                        child: Image.network(widget.str['photo2'],fit: BoxFit.fill,),),
                     Container(
                         width: width*0.5,
                         height: height*0.4,
-                        child: Image.network(widget.str['photo3'],fit: BoxFit.fill,)),
+                        child: Image.network(widget.str['photo3'],fit: BoxFit.fill,),),
                     Container(
                         width: width*0.5,
                         height: height*0.4,
-                        child: Image.network(widget.str['photo4'],fit: BoxFit.fill,)),
+                        child: Image.network(widget.str['photo4'],fit: BoxFit.fill,),),
                   ],
                 ),
               ),
@@ -119,6 +125,69 @@ class _ProjectScreenState extends State<ProjectScreen> {
 
                   ],
 
+                ),
+              ),
+              SizedBox(height: 20.0,),
+              RaisedButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                onPressed: () async {
+                  pd.show();
+                  FirebaseUser user=await FirebaseAuth.instance.currentUser();
+                  var uid=user.uid;
+                  var username;
+                  await Firestore.instance.collection('users').document(uid).get().then((value) {
+                    setState(() {
+                      username=value.data['about']['username'];
+                    });
+                  }).catchError((err){
+                    pd.hide();
+                    Alert(
+                      context: context,
+                      title: 'Something wrong',
+                      type: AlertType.error,
+
+                    ).show();
+                  });
+                  //update friend in our end
+                  await Firestore.instance.collection('Friends').document(uid).collection('Friends')
+                  .document(widget.str['uid']).setData({"username":widget.str['username'],
+                    "uid":widget.str['uid'],}).then((value) async {
+                      //update friend in user's end
+                      await Firestore.instance.collection('Friends').document
+                        (widget.str['uid']).collection('Friends')
+                      .document(uid).setData({'uid':uid,'username':username}).then((value){
+                        pd.hide();
+                        Navigator.push(context, MaterialPageRoute(builder:
+                            (context)=>Chatview(uid, widget.str['uid'],widget.str['username'])));
+                      }).catchError((err){
+                        pd.hide();
+                        Alert(
+                          context: context,
+                          title: 'Something wrong',
+                          type: AlertType.error,
+
+                        ).show();
+                      });
+                  }).catchError((err){
+                    pd.hide();
+                    Alert(
+                      context: context,
+                      title: 'Something wrong',
+                      type: AlertType.error,
+
+                    ).show();
+                  });
+                },
+                color: Color(0xffF1009C),
+                elevation: 3,
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Text(
+                    'Chat here',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ],

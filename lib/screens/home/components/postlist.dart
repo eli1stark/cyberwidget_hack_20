@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cyberwidget_hack_20/screens/project/project.dart';
 import 'package:flutter/material.dart';
 
@@ -12,14 +14,21 @@ class Postlist extends StatefulWidget {
 class _PostlistState extends State<Postlist> {
 
   var left=true;
+  List userimage=['assets/char_assets/c1.png','assets/char_assets/c2.png','assets/char_assets/c3.png',
+  'assets/char_assets/c4.png','assets/char_assets/c5.png','assets/char_assets/c6.png','assets/char_assets/c7.png',
+  'assets/char_assets/c8.png'];
+  var ran = Random();
+  var l;
   setpositionofwidget(){
     if(widget.index%2==0){
       setState(() {
+        l= ran.nextInt(userimage.length);
         left=true;
       });
     }
     else{
       setState(() {
+        l= ran.nextInt(userimage.length);
         left=false;
       });
     }
@@ -74,9 +83,12 @@ class _PostlistState extends State<Postlist> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 20.0,
+                          Container(
+                            width: 30.0,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: Image.asset(userimage[l],fit: BoxFit.fill,),
                           ),
                           SizedBox(width: 15.0,),
                           Text(widget.document['username'],style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
@@ -126,9 +138,12 @@ class _PostlistState extends State<Postlist> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 20.0,
+                          Container(
+                            width: 30.0,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: Image.asset(userimage[l],fit: BoxFit.fill,),
                           ),
                           SizedBox(width: 15.0,),
                           Text(widget.document['username'],style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
