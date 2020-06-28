@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_tagging: ^1.0.1
   #imagepicker
   image_picker: ^0.6.7+2
   

@@ -5,7 +5,8 @@ import 'package:cyberwidget_hack_20/screens/welcome/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:io';
-
+import 'package:cyberwidget_hack_20/components/tag_list.dart';
+import 'package:flutter_tagging/flutter_tagging.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddProject extends StatefulWidget {
@@ -16,7 +17,6 @@ class AddProject extends StatefulWidget {
 }
 
 class _AddProjectState extends State<AddProject> {
-  File _image1;
   File _image2;
   File _image3;
   File _image4;
@@ -47,6 +47,7 @@ class _AddProjectState extends State<AddProject> {
           ),
           borderRadius: BorderRadius.circular(10.0),
         ),
+        
       ),
       validator: (String value) {
         if (value.isEmpty) {
@@ -93,10 +94,12 @@ class _AddProjectState extends State<AddProject> {
   }
 
   Widget _buildTags() {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintStyle: TextStyle(color: Colors.white),
-        focusedBorder: OutlineInputBorder(
+    return FlutterTagging(
+                textFieldDecoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Tags",
+                    labelText: "Enter tags",
+                    focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: Color(0xffF1009C),
           ),
@@ -104,24 +107,31 @@ class _AddProjectState extends State<AddProject> {
         ),
         filled: true,
         fillColor: Colors.grey[200],
-        labelText: 'Tags',
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: Color(0xffF1009C),
           ),
           borderRadius: BorderRadius.circular(10.0),
-        ),
-      ),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'Tag is Required';
-        }
-      },
-      onSaved: (String value) {
-        _tags = value;
-      },
-    );
-  }
+        )
+                    ),
+                addButtonWidget: _buildAddButton(),
+                chipsColor: Colors.pinkAccent,
+                chipsFontColor: Colors.white,
+                deleteIcon: Icon(Icons.cancel,color: Colors.white),
+                chipsPadding: EdgeInsets.all(2.0),
+                chipsFontSize: 14.0,
+                chipsSpacing: 5.0,
+                chipsFontFamily: 'helvetica_neue_light',
+                suggestionsCallback: (pattern) async {
+                  return await TagSearchService.getSuggestions(pattern);
+                },
+                onChanged: (result) {
+                  setState(() {
+                    _tags = result.toString();
+                  });
+                },
+              );
+              }
 
   Widget _buildLink() {
     return TextFormField(
@@ -154,14 +164,7 @@ class _AddProjectState extends State<AddProject> {
     );
   }
 
-  Future _getImage1() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      _image1 = image;
-    });
-  }
-
+  
   Future _getImage2() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
@@ -204,7 +207,7 @@ class _AddProjectState extends State<AddProject> {
             fontAwesomeLeft: false,
             fontAwesomeRight: false,
             textButtonVisibility: true,
-            textString: "Final",
+            textString: "Submit",
             onTapText: () {
               if (!_formkey.currentState.validate()) {
                 return;
@@ -244,22 +247,6 @@ class _AddProjectState extends State<AddProject> {
                         _buildLink(),
                       ],
                     )),
-                SizedBox(
-                  height: 24,
-                ),
-                Container(
-                  height: 150,
-                  width: 300,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12)),
-                  child: FlatButton(
-                    onPressed: _getImage1,
-                    child: _image1 == null
-                        ? Icon(FontAwesomeIcons.plusCircle)
-                        : Image.file(_image1),
-                  ),
-                ),
                 SizedBox(
                   height: 24,
                 ),
@@ -328,3 +315,27 @@ class _AddProjectState extends State<AddProject> {
     );
   }
 }
+
+ Widget _buildAddButton() {
+    return Container(
+      padding: EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        color: Colors.pinkAccent,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Icon(
+            Icons.add,
+            color: Colors.white,
+            size: 15.0,
+          ),
+          Text(
+            "Add New Tag",
+            style: TextStyle(color: Colors.white, fontSize: 14.0),
+          ),
+        ],
+      ),
+    );
+  }
