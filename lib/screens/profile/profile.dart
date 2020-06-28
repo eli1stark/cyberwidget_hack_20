@@ -55,18 +55,25 @@ class Profile extends StatelessWidget {
                   ),
                   actions: <Widget>[
                     PopupMenuButton(
+                      // I'm getting error when signing out, it's not critical but again
+                      // Problem is it happens from time to time, Maybe I solved it already I don't know.
+                      // And also I can't resigning, I mean I need to close app to resigning
+                      // Because Wrapper() don't get changes and loading MainPage of the user which
+                      // already signed out.This feature is very buggy  
                       onSelected: (MoreOptions selectedValue) async {
                         if (selectedValue == MoreOptions.Signout) {
                           // DANGER ZONE. DON'T CHANGE ANYTHING
                           if (userData.about['signInMethod'] == 'email') {
                             // sign out user with email
                             await _auth.signOut();
+                            // Go to the Welcome
+                            Navigator.pushNamed(context, Welcome.routeName);
                           } else {
                             // sign out user with Google Sign In
                             await _googleAuth.signOutGoogle();
+                            // Go to the Welcome
+                            Navigator.pushNamed(context, Welcome.routeName);
                           }
-                          // Go to the Welcome Screen
-                          Navigator.pushNamed(context, Welcome.routeName);
                         } else {
                           // edit profile
                           Navigator.of(context)

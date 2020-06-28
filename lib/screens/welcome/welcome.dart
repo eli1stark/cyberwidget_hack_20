@@ -68,10 +68,9 @@ class _WelcomeState extends State<Welcome> {
                 // Trying to register the user
                 dynamic result = await _auth.signInGoogle();
                 if (result != null) {
-                  Navigator.pushNamed(
-                    context,
-                    TabsScreen.routeName,
-                  );
+                  // TODO: If I signed out from google account and trying
+                  // to Sign In again I can't go to the Home screen, I need close the
+                  // App and open it again to solve. I don't know why.
                 } else {
                   print('error');
                 }

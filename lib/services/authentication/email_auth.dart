@@ -56,6 +56,10 @@ class EmailAuthService {
         'firstName': firstName,
         'lastName': lastName,
         'signInMethod': 'email',
+        'gitHub': '',
+        'linkedIn': '',
+        'avatar': 'assets/char_assets/c8.png',
+        'background': 'assets/bg_assets/bg1.png',
       });
 
       return _userFromFirebaseUser(user);

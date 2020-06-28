@@ -35,6 +35,10 @@ class GoogleAuthService {
         'firstName': 'First Name',
         'lastName': 'Last Name',
         'signInMethod': 'google',
+        'gitHub': '',
+        'linkedIn': '',
+        'avatar': 'assets/char_assets/c8.png',
+        'background': 'assets/bg_assets/bg1.png',
       });
 
       return _userFromFirebaseUser(user);
