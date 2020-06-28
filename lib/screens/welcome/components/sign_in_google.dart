@@ -46,7 +46,12 @@ class SignInWithGoogle extends StatelessWidget {
               SizedBox(
                 width: 15.0,
               ),
-              Text('Sign-in with Google')
+              Text(
+                'Sign-in with Google',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              )
             ],
           ),
         ),

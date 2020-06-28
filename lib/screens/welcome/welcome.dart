@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 // screens
 import 'sigin.dart';
 import 'signup.dart';
-import 'package:cyberwidget_hack_20/screens/container/tabs_screen.dart';
 
 // components
 import 'components/background_container.dart';
