@@ -520,6 +520,10 @@ class _AddProjectState extends State<AddProject> {
                               ).show();
                             });
                           }
+                          description.clear();
+                          title.clear();
+                          gitlink.clear();
+                          Listofimages.clear();
                         },
                         color: Colors.purpleAccent,
                         shape: RoundedRectangleBorder(
