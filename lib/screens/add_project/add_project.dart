@@ -16,7 +16,11 @@ class AddProject extends StatefulWidget {
 }
 
 class _AddProjectState extends State<AddProject> {
-  File _image;
+  File _image1;
+  File _image2;
+  File _image3;
+  File _image4;
+  File _image5;
   String _title;
   String _discription;
   String _link;
@@ -27,7 +31,22 @@ class _AddProjectState extends State<AddProject> {
   Widget _buildTitle() {
     return TextFormField(
       decoration: InputDecoration(
+        hintStyle: TextStyle(color: Colors.white),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xffF1009C),
+          ),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        filled: true,
+        fillColor: Colors.grey[200],
         labelText: 'Title',
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xffF1009C),
+          ),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
       ),
       validator: (String value) {
         if (value.isEmpty) {
@@ -43,9 +62,25 @@ class _AddProjectState extends State<AddProject> {
   Widget _buildDescription() {
     return TextFormField(
       decoration: InputDecoration(
+        hintStyle: TextStyle(color: Colors.white),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xffF1009C),
+          ),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        filled: true,
+        fillColor: Colors.grey[200],
         labelText: 'Description',
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xffF1009C),
+          ),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
       ),
       keyboardType: TextInputType.multiline,
+      maxLines: 5,
       validator: (String value) {
         if (value.isEmpty) {
           return 'Description is Required';
@@ -60,7 +95,22 @@ class _AddProjectState extends State<AddProject> {
   Widget _buildTags() {
     return TextFormField(
       decoration: InputDecoration(
-        labelText: 'Tag',
+        hintStyle: TextStyle(color: Colors.white),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xffF1009C),
+          ),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        filled: true,
+        fillColor: Colors.grey[200],
+        labelText: 'Tags',
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xffF1009C),
+          ),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
       ),
       validator: (String value) {
         if (value.isEmpty) {
@@ -75,11 +125,22 @@ class _AddProjectState extends State<AddProject> {
 
   Widget _buildLink() {
     return TextFormField(
-      
       decoration: InputDecoration(
-        hintStyle: TextStyle(color: Colors.white),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xffF1009C),
+          ),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
         filled: true,
+        fillColor: Colors.grey[200],
         labelText: 'Git Repo Link',
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xffF1009C),
+          ),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
       ),
       keyboardType: TextInputType.url,
       validator: (String value) {
@@ -93,12 +154,43 @@ class _AddProjectState extends State<AddProject> {
     );
   }
 
-  Future _getImage() async {
+  Future _getImage1() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
-      _image = image;
-      print('_image: $_image');
+      _image1 = image;
+    });
+  }
+
+  Future _getImage2() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image2 = image;
+    });
+  }
+
+  Future _getImage3() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image2 = image;
+    });
+  }
+
+  Future _getImage4() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image4 = image;
+    });
+  }
+
+  Future _getImage5() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image5 = image;
     });
   }
 
@@ -127,99 +219,109 @@ class _AddProjectState extends State<AddProject> {
           ),
           preferredSize: Size.fromHeight(kToolbarHeight),
         ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            children: <Widget>[
-              Form(
-                  key: _formkey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      _buildTitle(),
-                      _buildDescription(),
-                      _buildTags(),
-                      _buildLink(),
-                    ],
-                  )),
-              SizedBox(
-                height: 24,
-              ),
-              Container(
-                height: 150,
-                width: 300,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12)),
-                child: FlatButton(
-                  onPressed: _getImage,
-                  child: _image == null
-                      ? Icon(FontAwesomeIcons.plusCircle)
-                      : Image.file(_image),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              children: <Widget>[
+                Form(
+                    key: _formkey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        _buildTitle(),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        _buildDescription(),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        _buildTags(),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        _buildLink(),
+                      ],
+                    )),
+                SizedBox(
+                  height: 24,
                 ),
-              ),
-              SizedBox(
-                height: 24,
-              ),
-              
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Container(
-                    height: 80,
-                    width: 80,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12)),
-                    child: FlatButton(
-                      onPressed: _getImage,
-                      child: _image == null
-                          ? Icon(FontAwesomeIcons.plusCircle)
-                          : Image.file(_image),
-                    ),
+                Container(
+                  height: 150,
+                  width: 300,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12)),
+                  child: FlatButton(
+                    onPressed: _getImage1,
+                    child: _image1 == null
+                        ? Icon(FontAwesomeIcons.plusCircle)
+                        : Image.file(_image1),
                   ),
-                  Container(
-                    height: 80,
-                    width: 80,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12)),
-                    child: FlatButton(
-                      onPressed: _getImage,
-                      child: _image == null
-                          ? Icon(FontAwesomeIcons.plusCircle)
-                          : Image.file(_image),
+                ),
+                SizedBox(
+                  height: 24,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Container(
+                      height: 80,
+                      width: 80,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12)),
+                      child: FlatButton(
+                        onPressed: _getImage2,
+                        child: _image2 == null
+                            ? Icon(FontAwesomeIcons.plusCircle)
+                            : Image.file(_image2),
+                      ),
                     ),
-                  ),
-                  Container(
-                    height: 80,
-                    width: 80,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12)),
-                    child: FlatButton(
-                      onPressed: _getImage,
-                      child: _image == null
-                          ? Icon(FontAwesomeIcons.plusCircle)
-                          : Image.file(_image),
+                    Container(
+                      height: 80,
+                      width: 80,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12)),
+                      child: FlatButton(
+                        onPressed: _getImage3,
+                        child: _image3 == null
+                            ? Icon(FontAwesomeIcons.plusCircle)
+                            : Image.file(_image3),
+                      ),
                     ),
-                  ),
-                  Container(
-                    height: 80,
-                    width: 80,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12)),
-                    child: FlatButton(
-                      onPressed: _getImage,
-                      child: _image == null
-                          ? Icon(FontAwesomeIcons.plusCircle)
-                          : Image.file(_image),
+                    Container(
+                      height: 80,
+                      width: 80,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12)),
+                      child: FlatButton(
+                        onPressed: _getImage4,
+                        child: _image4 == null
+                            ? Icon(FontAwesomeIcons.plusCircle)
+                            : Image.file(_image4),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                    Container(
+                      height: 80,
+                      width: 80,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12)),
+                      child: FlatButton(
+                        onPressed: _getImage5,
+                        child: _image5 == null
+                            ? Icon(FontAwesomeIcons.plusCircle)
+                            : Image.file(_image5),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
