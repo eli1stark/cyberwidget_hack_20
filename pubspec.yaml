@@ -34,6 +34,7 @@ dependencies:
   rflutter_alert: ^1.0.3
   progress_dialog: ^1.2.0
   flutter_spinkit: ^4.1.2+1
+  url_launcher: ^5.4.11
 
 
 

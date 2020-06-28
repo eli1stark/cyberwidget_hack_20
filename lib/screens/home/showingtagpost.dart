@@ -7,16 +7,18 @@ import 'package:cyberwidget_hack_20/screens/home/components/tagslist.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class Home extends StatefulWidget {
-  static const routeName = '/home';
+class Showingtagpost extends StatefulWidget {
 
+  String selectedtag;
+  Showingtagpost(this.selectedtag);
   @override
-  _HomeState createState() => _HomeState();
+  _ShowingtagpostState createState() => _ShowingtagpostState();
 }
 
-class _HomeState extends State<Home> {
+class _ShowingtagpostState extends State<Showingtagpost> {
 
   List tags=Tags().get_the_listoftags();
+
 
 
   List<Widget> getforpost(){
@@ -31,16 +33,6 @@ class _HomeState extends State<Home> {
     return ls;
 
   }
-  
-
-  
-
-  @override
-  void initState() {
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -94,11 +86,10 @@ class _HomeState extends State<Home> {
                 width: width,
                 height: height*0.9,
                 child: StreamBuilder(
-//                  Firestore.instance.collection('POST').orderBy
-//                    ('time',descending: false).getDocuments().asStream(),
                   stream: Firestore.instance.collection('posts').
-                  getDocuments().asStream(),
+                  where('tag1',isEqualTo:widget.selectedtag).getDocuments().asStream(),
                   builder: (context,snapshot){
+                    print('hello');
                     if(!snapshot.hasData || snapshot==null){
                       return Center(child: Text('No post yet'));
                     }
@@ -108,7 +99,7 @@ class _HomeState extends State<Home> {
                           return Postlist(snapshot.data.documents[index],index);
                         });
                   },
-                )
+                ),
               ),
 
 
