@@ -22,7 +22,6 @@ import 'package:provider/provider.dart';
 // services
 import 'services/authentication/email_auth.dart';
 
-
 void main() {
   runApp(MyApp());
 }
@@ -33,13 +32,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // user data goes down the Stream
     return StreamProvider<User>.value(
-        value: EmailAuthService().user,
-        child: MaterialApp(
+      value: EmailAuthService().user,
+      child: MaterialApp(
         theme: ThemeData(
           primaryColor: Color(0xff1A053E),
           canvasColor: Color(0xff1A053E),
           //fontFamily: 'Lato',
-          accentColor: Colors.grey,
+          accentColor: Color(0xFFF1009C),
         ),
         routes: {
           // DANGER ZONE, Don't change initial route!:
