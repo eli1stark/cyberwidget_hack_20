@@ -72,7 +72,7 @@ class _AddProjectState extends State<AddProject> {
       appBar: PreferredSize(
         child: TopNavBar(
           iconLeft: Icons.arrow_back,
-          iconRight: Icons.search,
+          iconRight: Icons.more_vert,
           fontAwesomeLeft: false,
           fontAwesomeRight: false,
           onTapLeft: () {
@@ -473,7 +473,7 @@ class _AddProjectState extends State<AddProject> {
                             ).show();
                           }else{
                             pd.show();
-                            await Firestore.instance.collection('posts').add({
+                            await Firestore.instance.collection('posts').document(currentuid).setData({
                               'description':description.text,
                               'gitLink':gitlink.text,
                               'photo1':Listofimages[0],

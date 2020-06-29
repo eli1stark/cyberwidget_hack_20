@@ -1,153 +1,212 @@
-// helpers
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:cyberwidget_hack_20/components/loader.dart';
 
-// models
-import 'package:cyberwidget_hack_20/models/user.dart';
-
-// screens
-import '../profile_settings/profile_settings.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cyberwidget_hack_20/screens/profile_settings/profile_settings.dart';
 import 'package:cyberwidget_hack_20/screens/welcome/welcome.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
-// services
-import 'package:cyberwidget_hack_20/services/database/database.dart';
 import 'package:cyberwidget_hack_20/services/authentication/email_auth.dart';
 import 'package:cyberwidget_hack_20/services/authentication/googe_auth.dart';
 
-enum MoreOptions { Edit, Signout }
 
-class Profile extends StatelessWidget {
+
+class Profile extends StatefulWidget {
   static const routeName = '/profile';
 
-  // Initialize EmailAuthService object
-  final EmailAuthService _auth = EmailAuthService();
+  @override
+  _ProfileState createState() => _ProfileState();
+}
 
-  // Initialize GoogleAuthService object
+class _ProfileState extends State<Profile> {
+  var isloading=true;
+  var ispost=false;
+  final EmailAuthService _auth = EmailAuthService();
+  var userid,assetsid;
+
+  getuserdetails() async{
+    FirebaseUser user=await FirebaseAuth.instance.currentUser();
+    var uid=user.uid;
+    await Firestore.instance.collection('users').document(uid).get().then((value){
+      setState(() {
+        isloading=false;
+        userid=uid;
+        assetsid=value.data['about']['background'];
+      });
+    }).catchError((err){
+      print('error $err');
+    });
+    await Firestore.instance.collection('posts').document(uid).get().then((value){
+      if(value.exists){
+        setState(() {
+          ispost=true;
+        });
+      }else{
+        setState(() {
+          ispost=false;
+        });
+      }
+    }).catchError((err){
+      setState(() {
+        ispost=false;
+      });
+    });
+  }
+
   final GoogleAuthService _googleAuth = GoogleAuthService();
+  List<String> dt=['Edit profile','Signout'];
+
+
+  @override
+  void initState() {
+    getuserdetails();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // get User from the Stream
-    final user = Provider.of<User>(context);
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.lightBlue,
+        title: Text("Profile",style: TextStyle(color: Colors.white),),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+              elevation: 3.0,
+              onSelected: _selected,
+              itemBuilder:(BuildContext context){
+                return dt.map((f){
+                  return PopupMenuItem<String>(
+                    value: f,
+                    child: Text(f),
+                  );
+                }).toList();
+              }
+          ),
+          SizedBox(width: 20.0,),
+        ],
+      ),
+      body: isloading?Container(
+        width: width,
+        height: height,
+        child: Center(child: Text('Loading...'),),
+      ):SingleChildScrollView(
+        child: Container(
+          width: width,
+          height: height,
+          child: Column(
+            children: [
+              Container(
+                width: width,
+                height: height*0.35,
+                child: Image.asset(assetsid,fit: BoxFit.fill,),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('My Post',style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),),
+                ],
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Container(
+                width: width,
+                height: height*0.5,
+                child: ispost?StreamBuilder(
+                  stream: Firestore.instance.collection('posts').document(userid).get().asStream(),
+                  builder: (context,snapshot){
+                    if(snapshot.connectionState == ConnectionState.waiting){
+                      return Center(child: Text('Loading...'));
+                    }
+                    else if(!snapshot.hasData || snapshot==null) {
+                      return Center(child: Text('No Post yet'),);
+                    }
+                      else{
+                      return ListView.builder(
+                          itemCount: snapshot.data.toString().length,
+                          itemBuilder: (context,index){
+                            return showthepost(snapshot,width,height);
+                          });
 
-    return StreamBuilder<UserData>(
-      stream: DatabaseService(uid: user.uid).userData,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          // User Data from Firestore
-          UserData userData = snapshot.data;
-          print(userData.about);
-
-          return Scaffold(
-            body: CustomScrollView(
-              slivers: <Widget>[
-                SliverAppBar(
-                  expandedHeight: 300,
-                  pinned: true,
-                  automaticallyImplyLeading: true,
-                  flexibleSpace: FlexibleSpaceBar(
-                    title: Text('Profile'),
-                    background: Image.network(
-                      'https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F76c7f2a8-9e75-4a48-a16e-a0bfd9f9bc73%2FUntitled.png?table=block&id=d41d1c47-e415-4bed-826c-422c78caa8ca&width=670&cache=v2',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  actions: <Widget>[
-                    PopupMenuButton(
-                      // I'm getting error when signing out, it's not critical but again
-                      // Problem is it happens from time to time, Maybe I solved it already I don't know.
-                      // And also I can't resigning, I mean I need to close app to resigning
-                      // Because Wrapper() don't get changes and loading MainPage of the user which
-                      // already signed out.This feature is very buggy  
-                      onSelected: (MoreOptions selectedValue) async {
-                        if (selectedValue == MoreOptions.Signout) {
-                          // DANGER ZONE. DON'T CHANGE ANYTHING
-                          if (userData.about['signInMethod'] == 'email') {
-                            // sign out user with email
-                            await _auth.signOut();
-                            // Go to the Welcome
-                            Navigator.pushNamed(context, Welcome.routeName);
-                          } else {
-                            // sign out user with Google Sign In
-                            await _googleAuth.signOutGoogle();
-                            // Go to the Welcome
-                            Navigator.pushNamed(context, Welcome.routeName);
-                          }
-                        } else {
-                          // edit profile
-                          Navigator.of(context)
-                              .pushNamed(ProfileSettings.routeName);
-                        }
-                      },
-                      itemBuilder: (_) => [
-                        PopupMenuItem(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text('Edit'),
-                              Icon(
-                                Icons.edit,
-                                color: Theme.of(context).primaryColor,
-                              )
-                            ],
-                          ),
-                          value: MoreOptions.Edit,
-                        ),
-                        PopupMenuItem(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text('Sign Out'),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Icon(
-                                Icons.exit_to_app,
-                                color: Theme.of(context).primaryColor,
-                              )
-                            ],
-                          ),
-                          value: MoreOptions.Signout,
-                        )
-                      ],
-                    ),
-                  ],
+                    }
+                  },
+                ):Center(
+                  child: Text('No Post yet'),
                 ),
-                SliverGrid(
-                  delegate:
-                      // ignore: non_constant_identifier_names
-                      SliverChildBuilderDelegate(
-                          (BuildContext context, int Index) {
-                    return Container(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 40.0, horizontal: 30.0),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.cyan,
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 8,
-                              color: Color(0xFFF1009C),
-                              offset: Offset(0, 2),
-                            )
-                          ]),
-                    );
-                  }, childCount: 10),
-                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 200,
-                      childAspectRatio: 0.776,
-                      crossAxisSpacing: 24,
-                      mainAxisSpacing: 18),
-                )
-              ],
-            ),
-          );
-        } else {
-          // Can cause some errors
-          return Loader();
+              ),
+
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+  Future<void> _selected(String value) async {
+    if(value==dt[0]){
+      Navigator.of(context)
+          .pushNamed(ProfileSettings.routeName);
+    }
+    else if(value==dt[1]){
+      FirebaseUser user=await FirebaseAuth.instance.currentUser();
+      var uid=user.uid;
+      await Firestore.instance.collection('users').document(uid).get().then((value) async {
+        if(value.data['about']['signInMethod']=='email'){
+          await _auth.signOut();
+
+          Navigator.pushNamed(context, Welcome.routeName);
+        }else{
+          await _googleAuth.signOutGoogle();
+          Navigator.pushNamed(context, Welcome.routeName);
+
         }
-      },
+
+      }).catchError((err){
+
+      });
+    }
+    else{
+      print('nothing');
+    }
+  }
+
+  Widget showthepost(AsyncSnapshot snapshot,double width,double height) {
+    print(snapshot.data['title']);
+    return Padding(
+      padding: const EdgeInsets.only(top:15.0),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(snapshot.data['title'],style: TextStyle(fontSize: 25.0,fontWeight: FontWeight.bold),),
+            ],
+          ),
+          Row(
+            children: [
+              Container(
+                width: width*0.5,
+                height: height*0.5,
+                child: Image.network(snapshot.data['photo1'],fit: BoxFit.fill,),
+              ),
+              Container(
+                width: width*0.5,
+                height: height*0.5,
+                child: Image.network(snapshot.data['photo2'],fit: BoxFit.fill,),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text('Tag1 ${snapshot.data['tag1']}',style: TextStyle(fontSize: 20.0,color: Colors.white),),
+              Text('Tag2 ${snapshot.data['tag2']}',style: TextStyle(fontSize: 20.0,color: Colors.white),)
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
+
+
