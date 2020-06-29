@@ -1,7 +1,10 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class ProfileSettings extends StatefulWidget {
   static const routeName = '/profile_settings';
@@ -47,6 +50,11 @@ class _ProfileSettingsState extends State<ProfileSettings> {
     _formKey.currentState.save();
     loadingWidget.show();
     print('valid form');
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override

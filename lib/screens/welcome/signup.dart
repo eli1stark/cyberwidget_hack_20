@@ -233,8 +233,8 @@ class _SignUpState extends State<SignUp> {
                                       'lastname':lstname.text,
                                       'signInMethod':'email',
                                       'username':username.text,
-                                      'linkedIn':'',
-                                      'gitHub':''
+                                      'linkedin':'',
+                                      'github':''
                                     }
                                     }).then((value) {
                                       pd.hide();

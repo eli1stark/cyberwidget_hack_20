@@ -1,6 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cyberwidget_hack_20/components/top_navbar.dart';
+import 'package:cyberwidget_hack_20/screens/container/tabs_screen.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -183,37 +184,10 @@ class _AddProjectState extends State<AddProject> {
                     onTap: () async{
                       if(Listofimages.length<5){
                         img1 = await FilePicker.getFile();
-                        StorageReference sr = FirebaseStorage.instance
-                            .ref()
-                            .child("${Path.basename(img1.path)}");
-                        StorageUploadTask uptsk = sr.putFile(img1);
-                        pd.show();
-                        await uptsk.onComplete;
-                        sr.getDownloadURL().then((suc) {
-                          pd.hide();
-                          print(suc);
-                          setState(() {
-                            Listofimages.add(suc.toString());
-                          });
+                        if(img1.path==null){
                           Alert(
                               context: context,
-                              title: 'Uploaded Image1',
-                              type: AlertType.success,
-                              buttons: [
-                                DialogButton(
-                                  child: Text('Okay'),
-                                  color: Color(0xffF1009C),
-                                  onPressed: (){
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ]
-                          ).show();
-                        }).catchError((err){
-                          pd.hide();
-                          Alert(
-                              context: context,
-                              title: 'Error',
+                              title: 'Uploaded Failed',
                               type: AlertType.error,
                               buttons: [
                                 DialogButton(
@@ -225,7 +199,56 @@ class _AddProjectState extends State<AddProject> {
                                 ),
                               ]
                           ).show();
-                        });
+
+                        }
+                        else{
+                          StorageReference sr = FirebaseStorage.instance
+                              .ref()
+                              .child("${Path.basename(img1.path)}");
+                          StorageUploadTask uptsk = sr.putFile(img1);
+                          pd.show();
+                          await uptsk.onComplete;
+                          sr.getDownloadURL().then((suc) {
+                            pd.hide();
+                            print(suc);
+                            setState(() {
+                              Listofimages.add(suc.toString());
+                            });
+                            Alert(
+                                context: context,
+                                title: 'Uploaded Image1',
+                                type: AlertType.success,
+                                buttons: [
+                                  DialogButton(
+                                    child: Text('Okay'),
+                                    color: Color(0xffF1009C),
+                                    onPressed: (){
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ]
+                            ).show();
+                          }).catchError((err){
+                            pd.hide();
+                            Alert(
+                                context: context,
+                                title: 'Error',
+                                type: AlertType.error,
+                                buttons: [
+                                  DialogButton(
+                                    child: Text('Okay'),
+                                    color: Color(0xffF1009C),
+                                    onPressed: (){
+                                      Navigator.pop(context);
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>TabPageSelector()));
+                                    },
+                                  ),
+                                ]
+                            ).show();
+                          });
+
+                        }
+
                       }
                     },
                     child: Container(
@@ -242,38 +265,11 @@ class _AddProjectState extends State<AddProject> {
                   GestureDetector(
                     onTap: () async{
                       if(Listofimages.length<5){
-                        img2 = await FilePicker.getFile();
-                        StorageReference sr = FirebaseStorage.instance
-                            .ref()
-                            .child("${Path.basename(img2.path)}");
-                        StorageUploadTask uptsk = sr.putFile(img2);
-                        pd.show();
-                        await uptsk.onComplete;
-                        sr.getDownloadURL().then((suc) {
-                          pd.hide();
-                          print(suc);
-                          setState(() {
-                            Listofimages.add(suc.toString());
-                          });
+                        img1 = await FilePicker.getFile();
+                        if(img1.path==null){
                           Alert(
                               context: context,
-                              title: 'Uploaded Image2',
-                              type: AlertType.success,
-                              buttons: [
-                                DialogButton(
-                                  child: Text('Okay'),
-                                  color: Color(0xffF1009C),
-                                  onPressed: (){
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ]
-                          ).show();
-                        }).catchError((err){
-                          pd.hide();
-                          Alert(
-                              context: context,
-                              title: 'Error',
+                              title: 'Uploaded Failed',
                               type: AlertType.error,
                               buttons: [
                                 DialogButton(
@@ -285,7 +281,56 @@ class _AddProjectState extends State<AddProject> {
                                 ),
                               ]
                           ).show();
-                        });
+
+                        }
+                        else{
+                          StorageReference sr = FirebaseStorage.instance
+                              .ref()
+                              .child("${Path.basename(img1.path)}");
+                          StorageUploadTask uptsk = sr.putFile(img1);
+                          pd.show();
+                          await uptsk.onComplete;
+                          sr.getDownloadURL().then((suc) {
+                            pd.hide();
+                            print(suc);
+                            setState(() {
+                              Listofimages.add(suc.toString());
+                            });
+                            Alert(
+                                context: context,
+                                title: 'Uploaded Image2',
+                                type: AlertType.success,
+                                buttons: [
+                                  DialogButton(
+                                    child: Text('Okay'),
+                                    color: Color(0xffF1009C),
+                                    onPressed: (){
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ]
+                            ).show();
+                          }).catchError((err){
+                            pd.hide();
+                            Alert(
+                                context: context,
+                                title: 'Error',
+                                type: AlertType.error,
+                                buttons: [
+                                  DialogButton(
+                                    child: Text('Okay'),
+                                    color: Color(0xffF1009C),
+                                    onPressed: (){
+                                      Navigator.pop(context);
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>TabPageSelector()));
+                                    },
+                                  ),
+                                ]
+                            ).show();
+                          });
+
+                        }
+
                       }
                     },
                     child: Container(
@@ -302,38 +347,11 @@ class _AddProjectState extends State<AddProject> {
                   GestureDetector(
                     onTap: () async{
                       if(Listofimages.length<5){
-                        img3 = await FilePicker.getFile();
-                        StorageReference sr = FirebaseStorage.instance
-                            .ref()
-                            .child("${Path.basename(img3.path)}");
-                        StorageUploadTask uptsk = sr.putFile(img3);
-                        pd.show();
-                        await uptsk.onComplete;
-                        sr.getDownloadURL().then((suc) {
-                          pd.hide();
-                          print(suc);
-                          setState(() {
-                            Listofimages.add(suc.toString());
-                          });
+                        img1 = await FilePicker.getFile();
+                        if(img1.path==null){
                           Alert(
                               context: context,
-                              title: 'Uploaded Image3',
-                              type: AlertType.success,
-                              buttons: [
-                                DialogButton(
-                                  child: Text('Okay'),
-                                  color: Color(0xffF1009C),
-                                  onPressed: (){
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ]
-                          ).show();
-                        }).catchError((err){
-                          pd.hide();
-                          Alert(
-                              context: context,
-                              title: 'Error',
+                              title: 'Uploaded Failed',
                               type: AlertType.error,
                               buttons: [
                                 DialogButton(
@@ -345,7 +363,56 @@ class _AddProjectState extends State<AddProject> {
                                 ),
                               ]
                           ).show();
-                        });
+
+                        }
+                        else{
+                          StorageReference sr = FirebaseStorage.instance
+                              .ref()
+                              .child("${Path.basename(img1.path)}");
+                          StorageUploadTask uptsk = sr.putFile(img1);
+                          pd.show();
+                          await uptsk.onComplete;
+                          sr.getDownloadURL().then((suc) {
+                            pd.hide();
+                            print(suc);
+                            setState(() {
+                              Listofimages.add(suc.toString());
+                            });
+                            Alert(
+                                context: context,
+                                title: 'Uploaded Image3',
+                                type: AlertType.success,
+                                buttons: [
+                                  DialogButton(
+                                    child: Text('Okay'),
+                                    color: Color(0xffF1009C),
+                                    onPressed: (){
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ]
+                            ).show();
+                          }).catchError((err){
+                            pd.hide();
+                            Alert(
+                                context: context,
+                                title: 'Error',
+                                type: AlertType.error,
+                                buttons: [
+                                  DialogButton(
+                                    child: Text('Okay'),
+                                    color: Color(0xffF1009C),
+                                    onPressed: (){
+                                      Navigator.pop(context);
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>TabPageSelector()));
+                                    },
+                                  ),
+                                ]
+                            ).show();
+                          });
+
+                        }
+
                       }
                     },
                     child: Container(
@@ -362,38 +429,11 @@ class _AddProjectState extends State<AddProject> {
                   GestureDetector(
                     onTap: () async{
                       if(Listofimages.length<5){
-                        img4 = await FilePicker.getFile();
-                        StorageReference sr = FirebaseStorage.instance
-                            .ref()
-                            .child("${Path.basename(img4.path)}");
-                        StorageUploadTask uptsk = sr.putFile(img4);
-                        pd.show();
-                        await uptsk.onComplete;
-                        sr.getDownloadURL().then((suc) {
-                          pd.hide();
-                          print(suc);
-                          setState(() {
-                            Listofimages.add(suc.toString());
-                          });
+                        img1 = await FilePicker.getFile();
+                        if(img1.path==null){
                           Alert(
                               context: context,
-                              title: 'Uploaded Image4',
-                              type: AlertType.success,
-                              buttons: [
-                                DialogButton(
-                                  child: Text('Okay'),
-                                  color: Color(0xffF1009C),
-                                  onPressed: (){
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ]
-                          ).show();
-                        }).catchError((err){
-                          pd.hide();
-                          Alert(
-                              context: context,
-                              title: 'Error',
+                              title: 'Uploaded Failed',
                               type: AlertType.error,
                               buttons: [
                                 DialogButton(
@@ -405,7 +445,56 @@ class _AddProjectState extends State<AddProject> {
                                 ),
                               ]
                           ).show();
-                        });
+
+                        }
+                        else{
+                          StorageReference sr = FirebaseStorage.instance
+                              .ref()
+                              .child("${Path.basename(img1.path)}");
+                          StorageUploadTask uptsk = sr.putFile(img1);
+                          pd.show();
+                          await uptsk.onComplete;
+                          sr.getDownloadURL().then((suc) {
+                            pd.hide();
+                            print(suc);
+                            setState(() {
+                              Listofimages.add(suc.toString());
+                            });
+                            Alert(
+                                context: context,
+                                title: 'Uploaded Image4',
+                                type: AlertType.success,
+                                buttons: [
+                                  DialogButton(
+                                    child: Text('Okay'),
+                                    color: Color(0xffF1009C),
+                                    onPressed: (){
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ]
+                            ).show();
+                          }).catchError((err){
+                            pd.hide();
+                            Alert(
+                                context: context,
+                                title: 'Error',
+                                type: AlertType.error,
+                                buttons: [
+                                  DialogButton(
+                                    child: Text('Okay'),
+                                    color: Color(0xffF1009C),
+                                    onPressed: (){
+                                      Navigator.pop(context);
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>TabPageSelector()));
+                                    },
+                                  ),
+                                ]
+                            ).show();
+                          });
+
+                        }
+
                       }
                     },
                     child: Container(
@@ -473,7 +562,8 @@ class _AddProjectState extends State<AddProject> {
                             ).show();
                           }else{
                             pd.show();
-                            await Firestore.instance.collection('posts').document(currentuid).setData({
+                            await Firestore.instance.collection('posts').document(currentuid).collection('mypost')
+                            .add({
                               'description':description.text,
                               'gitLink':gitlink.text,
                               'photo1':Listofimages[0],
@@ -486,22 +576,58 @@ class _AddProjectState extends State<AddProject> {
                               'uid':currentuid,
                               'username':username,
                               'time':DateTime.now().millisecondsSinceEpoch.toString(),
-                            }).then((value) {
-                              pd.hide();
-                              Alert(
-                                  context: context,
-                                  title: 'Successfully uploaded',
-                                  type: AlertType.success,
-                                  buttons: [
-                                    DialogButton(
-                                      child: Text('Okay'),
-                                      color: Color(0xffF1009C),
-                                      onPressed: (){
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                  ]
-                              ).show();
+                            }).then((value) async {
+                              await Firestore.instance.collection('posts')
+                                  .add({
+                                'description':description.text,
+                                'gitLink':gitlink.text,
+                                'photo1':Listofimages[0],
+                                'photo2':Listofimages[1],
+                                'photo3':Listofimages[2],
+                                'photo4':Listofimages[3],
+                                'tag1':currenttag1,
+                                'tag2':currenttag2,
+                                'title':title.text,
+                                'uid':currentuid,
+                                'username':username,
+                                'time':DateTime.now().millisecondsSinceEpoch.toString(),
+                              }).then((value) {
+                                pd.hide();
+                                Alert(
+                                    context: context,
+                                    title: 'Successfully uploaded',
+                                    type: AlertType.success,
+                                    buttons: [
+                                      DialogButton(
+                                        child: Text('Okay'),
+                                        color: Color(0xffF1009C),
+                                        onPressed: (){
+                                          Navigator.pop(context);
+                                          Navigator.push(context,
+                                              MaterialPageRoute(builder: (context)=>TabsScreen()));
+                                        },
+                                      ),
+                                    ]
+                                ).show();
+
+                              }).catchError((err){
+                                pd.hide();
+                                Alert(
+                                    context: context,
+                                    title: 'Something wrong',
+                                    type: AlertType.error,
+                                    buttons: [
+                                      DialogButton(
+                                        child: Text('Okay'),
+                                        color: Color(0xffF1009C),
+                                        onPressed: (){
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ]
+                                ).show();
+
+                              });
                             }).catchError((err){
                               pd.hide();
                               Alert(
