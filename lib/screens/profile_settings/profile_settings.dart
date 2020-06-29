@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cyberwidget_hack_20/screens/container/tabs_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -15,9 +16,14 @@ class ProfileSettings extends StatefulWidget {
 }
 
 class _ProfileSettingsState extends State<ProfileSettings> {
-  Map<String, Object> _profileData = {};
+  TextEditingController fstname,lstname,username,github,linkedin;
+  ProgressDialog pd;
+  List<Widget> ls=[];
+  List<Widget> ls2=[];
+  var co1,co2;
 
-  final GlobalKey<FormState> _formKey = GlobalKey();
+
+
   final characterImages = [
     'assets/char_assets/c1.png',
     'assets/char_assets/c2.png',
@@ -36,295 +42,356 @@ class _ProfileSettingsState extends State<ProfileSettings> {
     'assets/bg_assets/bg5.png',
     'assets/bg_assets/bg6.png'
   ];
-  ProgressDialog loadingWidget;
+  var selectedimage,slet;
+  bool no1sel=false;
+  bool no2sel=false;
 
-  int _selectedCharacterIndex;
-  int _selectedBackgroundIndex;
+  getupdates(){
+    characterImages.forEach((element) {
+      setState(() {
+        ls.add(
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: (){
+                setState(() {
+                  no1sel=!no1sel;
+                  selectedimage=element;
+                });
+              },
+              child: Container(
+                width:100.0,
+                height: 150.0,
+                decoration: no1sel?BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0xff6F29E6),
+                        spreadRadius: 4.0,
+                        blurRadius: 4.0,
+                        offset: Offset(0, 4),
+                      )
+                    ]):BoxDecoration(),
+                child: Image.asset(element,fit: BoxFit.fill,),
+              ),
+            ),
+          ),
+        );
+      });
+    });
 
-  void _submit() async {
-    if (!_formKey.currentState.validate()) {
-      // Invalid!
-      print('invalid form');
-      return;
-    }
-    _formKey.currentState.save();
-    loadingWidget.show();
-    print('valid form');
   }
+  getupdatesforbg(){
+    backgroundImages.forEach((elements) {
+      setState(() {
+        ls2.add(
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: GestureDetector(
+                onTap: (){
+                  setState(() {
+                    no2sel=!no2sel;
+                    slet=elements;
+                  });
+                },
+                child: Container(
+                  width:400,
+                  height: 30.0,
+                  decoration: no2sel?BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color(0xff6F29E6),
+                          spreadRadius: 4.0,
+                          blurRadius: 4.0,
+                          offset: Offset(0, 4),
+                        )
+                      ]):BoxDecoration(),
+                  child: Image.asset(elements,fit: BoxFit.fill,),
+                ),
+              ),
+            ),
+        );
+      });
+    });
+
+  }
+
 
   @override
   void initState() {
+    fstname=TextEditingController(text: "");
+    lstname =TextEditingController(text: "");
+    username=TextEditingController(text: "");
+    github=TextEditingController(text: "");
+    linkedin=TextEditingController(text: "");
     super.initState();
+    getupdates();
+    getupdatesforbg();
   }
 
   @override
   Widget build(BuildContext context) {
-    loadingWidget = ProgressDialog(context, isDismissible: false);
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    pd = ProgressDialog(context);
+    pd.style(message: 'Please wait...');
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Edit Profile'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.check),
-            onPressed: _submit,
-          )
-        ],
+      appBar: AppBar(backgroundColor: Colors.lightBlue,
+        title: Text("Profile",style: TextStyle(color: Colors.white),),
       ),
-      body: Form(
-        key: _formKey,
+      body: Container(
+        width: width,
+        height: height,
         child: SingleChildScrollView(
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: ProfileSettings.horizontalPadding),
-                child: Text(
-                  'Choose Your Character',
-                  style: TextStyle(
-                      fontSize: 21,
-                      color: Theme.of(context).primaryTextTheme.button.color),
+          child: Padding(
+            padding: const EdgeInsets.only(left:8.0,right:8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 20.0
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                height: 130,
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: ProfileSettings.horizontalPadding),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: characterImages.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: () {
-                        _profileData['characterIndex'] = index;
-                        setState(() {
-                          _selectedCharacterIndex = index;
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: Container(
-                          width: 90,
-                          height: 130,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(characterImages[index]),
-                                  fit: BoxFit.fitHeight),
-                              gradient: RadialGradient(colors: [
-                                Theme.of(context).accentColor,
-                                Color(0XFF6F29E6)
-                              ]),
-                              border: Border.all(
-                                  width: 2,
-                                  color: index == _selectedCharacterIndex
-                                      ? Theme.of(context).accentColor
-                                      : Colors.white),
-                              borderRadius: BorderRadius.circular(20)),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(
-                height: 46,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: ProfileSettings.horizontalPadding),
-                child: Text(
-                  'Choose Your Background',
-                  style: TextStyle(
-                      fontSize: 21,
-                      color: Theme.of(context).primaryTextTheme.button.color),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                height: 122,
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: ProfileSettings.horizontalPadding),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: backgroundImages.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: () {
-                        _profileData['backgroundIndex'] = index;
-                        setState(() {
-                          _selectedBackgroundIndex = index;
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Container(
-                          width: 180,
-                          height: 122,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(backgroundImages[index]),
-                                  fit: BoxFit.fitHeight),
-                              color: Colors.amber,
-                              border: Border.all(
-                                  width: 2,
-                                  color: index == _selectedBackgroundIndex
-                                      ? Theme.of(context).accentColor
-                                      : Colors.white),
-                              borderRadius: BorderRadius.circular(20)),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: ProfileSettings.horizontalPadding),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Flexible(
-                          flex: 1,
-                          child: ProfileTextField(
-                            title: 'First Name',
-                            validator: (value) {
-                              if (value.trim().isEmpty) {
-                                return 'Field must not be empty';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              _profileData['firstName'] = value;
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          width: 40,
-                        ),
-                        Flexible(
-                          flex: 1,
-                          child: ProfileTextField(
-                              title: 'Last Name',
-                              validator: (value) {
-                                if (value.trim().isEmpty) {
-                                  return 'Field must not be empty';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                _profileData['lastName'] = value;
-                              }),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ProfileTextField(
-                      title: 'User Name',
-                      onSaved: (value) {
-                        _profileData['username'] = value;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ProfileTextField(
-                      title: 'Github',
-                      onSaved: (value) {
-                        _profileData['github'] = value;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ProfileTextField(
-                      title: 'LinkedIn',
-                      onSaved: (value) {
-                        _profileData['linkedin'] = value;
-                      },
-                    ),
-                    SizedBox(height: 70.0,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text('Avatar',style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),),
                   ],
                 ),
-              )
-            ],
+                SizedBox(
+                    height: 20.0
+                ),
+                Container(
+                  width: width,
+                  height: height*0.15,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: ls,
+                  ),
+                ),
+                SizedBox(
+                    height: 20.0
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(no1sel?'selected':'Select Avatar',style: TextStyle(fontSize: 15.0),)
+                  ],
+                ),
+
+                SizedBox(
+                    height: 20.0
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text('Background',style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),),
+                  ],
+                ),
+                SizedBox(
+                    height: 20.0
+                ),
+                Container(
+                  width: width,
+                  height: height*0.2,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: ls2,
+                  ),
+                ),
+                SizedBox(
+                    height: 20.0
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(no2sel?'selected':'Select background',style: TextStyle(fontSize: 15.0),)
+                  ],
+                ),
+                SizedBox(
+                    height: 20.0
+                ),
+                TextField(
+                  controller: username,
+                  cursorColor: Colors.white,
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                      hintText: 'Username',
+                      hintStyle: TextStyle(color: Colors.white),
+                      suffixIcon: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      )),
+                ),
+                SizedBox(
+                  height: 15.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: width * 0.39,
+                      child: TextField(
+                        cursorColor: Colors.white,
+                        style: TextStyle(color: Colors.white),
+                        controller: fstname,
+                        decoration: InputDecoration(
+                          hintText: 'First Name',
+                          hintStyle: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: width * 0.39,
+                      child: TextField(
+                        controller: lstname,
+                        cursorColor: Colors.white,
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          hintText: 'Last Name',
+                          hintStyle: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 15.0,
+                ),
+                TextField(
+                  controller: github,
+                  cursorColor: Colors.white,
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                      hintText: 'Github',
+                      hintStyle: TextStyle(color: Colors.white),
+                      suffixIcon: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      )),
+                ),
+                SizedBox(
+                  height: 15.0,
+                ),
+                TextField(
+                  controller: linkedin,
+                  cursorColor: Colors.white,
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                      hintText: 'Linkedin',
+                      hintStyle: TextStyle(color: Colors.white),
+                      suffixIcon: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      )),
+                ),
+                SizedBox(
+                  height: height * 0.1,
+                ),
+                Container(
+                  width: width * 0.5,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color(0xff6F29E6),
+                          spreadRadius: 2.0,
+                          blurRadius: 4.0,
+                          offset: Offset(0, 4),
+                        )
+                      ]),
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    onPressed: () async {
+                      if (username.text.isEmpty ||
+                          fstname.text.isEmpty ||
+                          lstname.text.isEmpty ||
+                          github.text.isEmpty ||
+                          linkedin.text.isEmpty) {
+                        Alert(
+                            context: context,
+                            type: AlertType.warning,
+                            title: 'Fill all the fields',
+                            buttons: [
+                              DialogButton(
+                                child: Text('Okay'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                color: Color(0xffF1009C),
+                              )
+                            ]).show();
+                      } else if(!no1sel || !no2sel){
+                        Alert(
+                            context: context,
+                            type: AlertType.warning,
+                            title: 'Select the image',
+                            buttons: [
+                              DialogButton(
+                                child: Text('Okay'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                color: Color(0xffF1009C),
+                              )
+                            ]).show();
+                      }
+                        else
+                        {
+                        pd.show();
+                        FirebaseUser user =await FirebaseAuth.instance.currentUser();
+                        var uuuid=user.uid;
+                        await Firestore.instance.collection('users').document(uuuid).updateData({
+                         "about":{
+                           "avatar":selectedimage,
+                           'background':slet,
+                           'firstname':fstname.text,
+                           'lastname':lstname.text,
+                           'username':username.text,
+                           'linkedin':linkedin.text,
+                           'github':github.text,
+                         }
+                        }).then((value) {
+                          pd.hide();
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>TabsScreen()));
+                        }).catchError((err){
+                          pd.hide();
+                          Alert(
+                            context: context,
+                            title: 'Something wrong',
+                            type: AlertType.warning,
+                          ).show();
+
+                        });
+
+                        github.clear();
+                        username.clear();
+                        fstname.clear();
+                        lstname.clear();
+                        linkedin.clear();
+                      }
+                    },
+                    color: Color(0xffF1009C),
+                    elevation: 3,
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Text(
+                        'Submit',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: height*0.15,),
+              ],
+            ),
           ),
         ),
       ),
+
     );
   }
 }
 
-class ProfileTextField extends StatelessWidget {
-  final Function(String value) onSaved;
-  final String Function(String value) validator;
-  final String title;
-  ProfileTextField(
-      {@required this.title, @required this.onSaved, this.validator});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(title,
-            style: TextStyle(
-                fontSize: 21,
-                color: Theme.of(context).primaryTextTheme.button.color)),
-        const SizedBox(
-          height: 17,
-        ),
-        TextFormField(
-          decoration: InputDecoration(
-              enabledBorder: const OutlineInputBorder(
-                borderRadius:
-                    const BorderRadius.all(const Radius.circular(20.0)),
-                borderSide: BorderSide(width: 2, color: Colors.white),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius:
-                    const BorderRadius.all(const Radius.circular(20.0)),
-                borderSide:
-                    BorderSide(width: 2, color: Theme.of(context).accentColor),
-              ),
-              errorBorder: OutlineInputBorder(
-                borderRadius:
-                    const BorderRadius.all(const Radius.circular(20.0)),
-                borderSide:
-                    BorderSide(width: 2, color: Theme.of(context).accentColor),
-              ),
-              focusedErrorBorder: OutlineInputBorder(
-                borderRadius:
-                    const BorderRadius.all(const Radius.circular(20.0)),
-                borderSide:
-                    BorderSide(width: 2, color: Theme.of(context).accentColor),
-              )),
-          cursorColor: Colors.white,
-          style: TextStyle(color: Colors.white),
-          validator: (value) {
-            if (validator != null) {
-              return validator(value);
-            } else {
-              return null;
-            }
-          },
-          onSaved: (String value) {
-            onSaved(value);
-          },
-        ),
-      ],
-    );
-  }
-}
