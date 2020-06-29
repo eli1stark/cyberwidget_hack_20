@@ -38,7 +38,9 @@ class _ProfileState extends State<Profile> {
     var myuidva=user.uid;
     await Firestore.instance.collection('posts').document(myuidva).collection('mypost').getDocuments()
     .then((value) {
+      print(value);
       value.documents.forEach((element) {
+        print(element.data['title']);
         setState(() {
           ls.add(
               Padding(
@@ -136,18 +138,21 @@ class _ProfileState extends State<Profile> {
     }).catchError((err){
       print('error $err');
     });
-    await Firestore.instance.collection('posts').document(uid).get().then((value){
-      if(value.exists){
+    await Firestore.instance.collection('posts').document(uid).collection('mypost').getDocuments().then((value){
+      if(value.documents.isNotEmpty){
         setState(() {
           ispost=true;
         });
       }else{
         setState(() {
+          print(uid);
+          print('something wrong');
           ispost=false;
         });
       }
     }).catchError((err){
       setState(() {
+        print(err);
         ispost=false;
       });
     });
