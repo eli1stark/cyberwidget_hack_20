@@ -175,7 +175,7 @@ class _ProfileState extends State<Profile> {
   Widget showthepost(AsyncSnapshot snapshot,double width,double height) {
     print(snapshot.data['title']);
     return Padding(
-      padding: const EdgeInsets.only(top:15.0),
+      padding: const EdgeInsets.only(top:15.0,left:10.0,right:10.0),
       child: Column(
         children: [
           Row(
@@ -184,15 +184,36 @@ class _ProfileState extends State<Profile> {
             ],
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 width: width*0.5,
-                height: height*0.5,
+                height: height*0.4,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0xff6F29E6),
+                        spreadRadius: 4.0,
+                        blurRadius: 4.0,
+                        offset: Offset(0, 4),
+                      )
+                    ]),
                 child: Image.network(snapshot.data['photo1'],fit: BoxFit.fill,),
               ),
               Container(
                 width: width*0.5,
-                height: height*0.5,
+                height: height*0.4,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0xff6F29E6),
+                        spreadRadius: 4.0,
+                        blurRadius: 4.0,
+                        offset: Offset(0, 4),
+                      )
+                    ]),
                 child: Image.network(snapshot.data['photo2'],fit: BoxFit.fill,),
               ),
             ],
