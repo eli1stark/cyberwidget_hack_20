@@ -1,8 +1,8 @@
 # cyberwidget_hack_20
 [About Idea]( https://www.notion.so/eli1stark/CyberWidget-4632115ce50b4e2d8597259f04cea2cb) <br/>
-<img src="https://i.imgur.com/AE7M9wM.jpg">
-![alt text](https://i.imgur.com/AE7M9wM.jpg)
-![alt text](https://i.imgur.com/LRtpJ7G.png)
+<img src="https://i.imgur.com/AE7M9wM.jpg" width="100" height="200">
+<img src="https://i.imgur.com/LRtpJ7G.png" width="100" height="200">
+
 ## Tech Stack: <br/>
 **State Management:** Provider/Stateful Widget  <br/>
 **Frontend:** Flutter  <br/>
